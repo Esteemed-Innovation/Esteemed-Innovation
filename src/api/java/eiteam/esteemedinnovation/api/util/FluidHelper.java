@@ -10,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.*;
@@ -49,6 +50,17 @@ public class FluidHelper {
         ItemStack heldItem = ItemStackUtility.getHeldItemStack(player);
         return itemStackIsWaterContainer(heldItem);
     }
+    /**
+     * Check if the player is holding a water container.
+     * @param player The player.
+     * @param hand The hand to check.
+     * @return Whether the player is holding a container and it has water in it.
+     */
+    public static boolean playerIsHoldingWaterContainer(EntityPlayer player, EnumHand hand) {
+        ItemStack heldItem = player.getHeldItem(hand);
+        return itemStackIsWaterContainer(heldItem);
+    }
+
 
     /**
      * Check if the ItemStack is a water container.

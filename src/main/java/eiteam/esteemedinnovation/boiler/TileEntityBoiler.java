@@ -56,7 +56,6 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements Wren
         }
     };
     private FluidTank myTank = new FluidTank(new FluidStack(FluidHelper.getWaterFluid(), 0), TANK_CAPACITY);
-    public int cookTime;
     public int burnTime;
     public int currentItemBurnTime;
     private Block disguiseBlock;
@@ -65,7 +64,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements Wren
     private boolean wasBurning;
 
     public TileEntityBoiler(int capacity) {
-        super(capacity, new EnumFacing[] { EnumFacing.UP });
+        super(capacity, new EnumFacing[]{EnumFacing.UP});
         addSideToGaugeBlacklist(EnumFacing.UP);
         setPressureResistance(0.5F);
     }
@@ -91,11 +90,11 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements Wren
             }
 
             if (block.getDefaultState().getMaterial() == Material.WOOD) {
-                burnTime =  300;
+                burnTime = 300;
             }
 
             if (OreDictHelper.blockCoals.contains(item)) {
-                burnTime =  16000;
+                burnTime = 16000;
             }
         }
 
@@ -109,10 +108,10 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements Wren
             burnTime = 200;
         }
         if (OreDictHelper.listHasItem(OreDictHelper.sticks, item)) {
-            burnTime =  100;
+            burnTime = 100;
         }
         if (item == Items.COAL) {
-            burnTime =  1600;
+            burnTime = 1600;
         }
         if (item == Items.LAVA_BUCKET) {
             burnTime = 20000;
@@ -131,7 +130,6 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements Wren
         NBTTagCompound access = getUpdateTag();
         access.setInteger("WaterStored", myTank.getFluidAmount());
         access.setShort("BurnTime", (short) burnTime);
-        access.setShort("CookTime", (short) cookTime);
         access.setShort("CurrentItemBurnTime", (short) currentItemBurnTime);
         access.setInteger("DisguiseBlock", Block.getIdFromBlock(disguiseBlock));
         access.setInteger("DisguiseMetadata", disguiseMeta);
@@ -146,7 +144,6 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements Wren
         myTank.setFluid(new FluidStack(FluidHelper.getWaterFluid(), access.getInteger("WaterStored")));
         burnTime = access.getShort("BurnTime");
         currentItemBurnTime = access.getShort("CurrentItemBurnTime");
-        cookTime = access.getShort("CookTime");
         disguiseBlock = Block.getBlockById(access.getInteger("DisguiseBlock"));
         disguiseMeta = access.getInteger("DisguiseMetadata");
         markForResync();
@@ -157,7 +154,6 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements Wren
         super.readFromNBT(nbt);
         inventory.deserializeNBT(nbt.getCompoundTag("Items"));
         burnTime = nbt.getShort("BurnTime");
-        cookTime = nbt.getShort("CookTime");
         currentItemBurnTime = nbt.getShort("CurrentItemBurnTime");
 
         if (nbt.hasKey("CustomName")) {
@@ -178,7 +174,6 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements Wren
         nbt.setTag("Items", inventory.serializeNBT());
         nbt.setShort("BurnTime", (short) burnTime);
         nbt.setShort("WaterStored", (short) myTank.getFluidAmount());
-        nbt.setShort("CookTime", (short) cookTime);
         nbt.setShort("CurrentItemBurnTime", (short) currentItemBurnTime);
         nbt.setInteger("DisguiseBlock", Block.getIdFromBlock(disguiseBlock));
         nbt.setInteger("DisguiseMetadata", disguiseMeta);
@@ -239,19 +234,8 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements Wren
             }
 
             if (isBurning() && canSmelt() && getNetwork() != null) {
-                ++cookTime;
-
-                if (cookTime > 0) {
-                    //int i = 0;
-                    //while (i<maxThisTick && isBurning() && canSmelt()) {
-                    getNetwork().addSteam(10);
-                    myTank.drain(2, true);
-                    ///i++;
-                    //}
-                    cookTime = 0;
-                }
-            } else {
-                cookTime = 0;
+                getNetwork().addSteam(10);
+                myTank.drain(2, true);
             }
 
             if (isBurnTimeGreaterThanZero != burnTime > 0) {
@@ -268,7 +252,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements Wren
     }
 
     private boolean canSmelt() {
-        return myTank.getFluidAmount() > 9;
+        return myTank.getFluidAmount() > 0;
     }
 
     public boolean isBurning() {

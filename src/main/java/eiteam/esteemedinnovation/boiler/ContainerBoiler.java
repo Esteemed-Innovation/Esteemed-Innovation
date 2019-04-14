@@ -17,7 +17,6 @@ import javax.annotation.Nonnull;
 
 public class ContainerBoiler extends Container {
     private TileEntityBoiler tileEntity;
-    private int lastCookTime;
     private int lastBurnTime;
     private int lastItemBurnTime;
     private int lastPressure;
@@ -44,10 +43,9 @@ public class ContainerBoiler extends Container {
     @Override
     public void addListener(IContainerListener listener) {
         super.addListener(listener);
-        listener.sendWindowProperty(this, 0, tileEntity.cookTime);
-        listener.sendWindowProperty(this, 1, tileEntity.burnTime);
-        listener.sendWindowProperty(this, 2, TileEntityBoiler.getItemBurnTime(ItemStack.EMPTY));
-        listener.sendWindowProperty(this, 3, (int) Math.floor((double) tileEntity.getPressure() * 1000));
+        listener.sendWindowProperty(this, 0, tileEntity.burnTime);
+        listener.sendWindowProperty(this, 1, TileEntityBoiler.getItemBurnTime(ItemStack.EMPTY));
+        listener.sendWindowProperty(this, 2, (int) Math.floor((double) tileEntity.getPressure() * 1000));
     }
 
     @Override
@@ -55,28 +53,24 @@ public class ContainerBoiler extends Container {
         super.detectAndSendChanges();
 
         for (IContainerListener listener : listeners) {
-            if (lastCookTime != tileEntity.cookTime) {
-                listener.sendWindowProperty(this, 0, tileEntity.cookTime);
-            }
 
             if (lastBurnTime != tileEntity.burnTime) {
-                listener.sendWindowProperty(this, 1, tileEntity.burnTime);
+                listener.sendWindowProperty(this, 0, tileEntity.burnTime);
             }
 
             if (lastItemBurnTime != tileEntity.currentItemBurnTime) {
-                listener.sendWindowProperty(this, 2, tileEntity.currentItemBurnTime);
+                listener.sendWindowProperty(this, 1, tileEntity.currentItemBurnTime);
             }
 
             if (lastPressure != tileEntity.getPressureAsInt()) {
-                listener.sendWindowProperty(this, 3, tileEntity.getPressureAsInt());
+                listener.sendWindowProperty(this, 2, tileEntity.getPressureAsInt());
             }
 
             if (lastWater != tileEntity.getTank().getFluidAmount()) {
-                listener.sendWindowProperty(this, 4, tileEntity.getTank().getFluidAmount());
+                listener.sendWindowProperty(this, 3, tileEntity.getTank().getFluidAmount());
             }
         }
 
-        lastCookTime = tileEntity.cookTime;
         lastBurnTime = tileEntity.burnTime;
         lastItemBurnTime = tileEntity.currentItemBurnTime;
         lastPressure = tileEntity.getPressureAsInt();
@@ -87,20 +81,16 @@ public class ContainerBoiler extends Container {
     @Override
     public void updateProgressBar(int id, int data) {
         if (id == 0) {
-            tileEntity.cookTime = data;
-        }
-
-        if (id == 1) {
             tileEntity.burnTime = data;
         }
 
-        if (id == 2) {
+        if (id == 1) {
             tileEntity.currentItemBurnTime = data;
         }
-        if (id == 3) {
+        if (id == 2) {
             tileEntity.setPressure(data / 1000F);
         }
-        if (id == 4) {
+        if (id == 3) {
             int current = tileEntity.getTank().getFluidAmount();
             int diff = data - current;
             if (diff > 0) {

@@ -152,9 +152,11 @@ public class BlockBoiler extends BlockSteamTransporter implements Wrenchable {
         boolean isClient = !world.isRemote;
 
         if (tileEntity != null) {
-            if (!FluidHelper.playerIsHoldingWaterContainer(player) && isClient) {
-                player.openGui(EsteemedInnovation.instance, 0, world, pos.getX(), pos.getY(), pos.getZ());
-            } else{
+            if (!FluidHelper.playerIsHoldingWaterContainer(player, hand)) {
+                if (isClient) {
+                    player.openGui(EsteemedInnovation.instance, 0, world, pos.getX(), pos.getY(), pos.getZ());
+                }
+            } else {
                 player.setHeldItem(hand, FluidHelper.fillTankFromItem(player.getHeldItem(hand), tileEntity.getTank(), !player.capabilities.isCreativeMode));
             }
         }
