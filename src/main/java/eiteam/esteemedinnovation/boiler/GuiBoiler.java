@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -17,6 +18,11 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
+
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @SideOnly(Side.CLIENT)
 public class GuiBoiler extends GuiContainer {
@@ -37,7 +43,20 @@ public class GuiBoiler extends GuiContainer {
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {}
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+        int x = mouseX - guiLeft;
+        int y = mouseY - guiTop;
+        if(x > 80 && y > 13 && x < 97 && y < 72) {
+            //We are hovering over the water tank
+            FluidTank tank = tileEntity.getTank();
+            if(tank.getFluid() != null) {
+                drawHoveringText(Arrays.asList(
+                  tank.getFluid().getLocalizedName(),
+                  NumberFormat.getInstance().format(tank.getFluidAmount()) + " / " + NumberFormat.getInstance().format(TileEntityBoiler.TANK_CAPACITY) + " mb"), x, y);
+            }
+        }
+
+    }
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {

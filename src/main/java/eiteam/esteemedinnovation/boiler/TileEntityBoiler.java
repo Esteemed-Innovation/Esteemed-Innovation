@@ -38,6 +38,8 @@ import net.minecraftforge.items.ItemStackHandler;
 import javax.annotation.Nonnull;
 
 public class TileEntityBoiler extends SteamTransporterTileEntity implements Wrenchable, DisguisableBlock {
+    public static final int TANK_CAPACITY = 10_000;
+
     public ItemStackHandler inventory = new ItemStackHandler(2) {
         @Override
         public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
@@ -53,7 +55,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements Wren
             TileEntityBoiler.this.markDirty();
         }
     };
-    private FluidTank myTank = new FluidTank(new FluidStack(FluidHelper.getWaterFluid(), 0), 10000);
+    private FluidTank myTank = new FluidTank(new FluidStack(FluidHelper.getWaterFluid(), 0), TANK_CAPACITY);
     public int cookTime;
     public int burnTime;
     public int currentItemBurnTime;
