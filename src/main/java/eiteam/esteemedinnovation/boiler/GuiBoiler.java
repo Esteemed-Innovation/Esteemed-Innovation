@@ -77,15 +77,13 @@ public class GuiBoiler extends GuiContainer {
             return;
         }
         FluidStack fluidStack = tank.getFluid();
-        if (fluidStack == null) {
-            return;
+        if (fluidStack != null) {
+            float fill = fluidStack.amount / (float) tank.getCapacity();
+            drawFluid(new FluidStack(FluidHelper.getWaterFluid(), 1), (int) (fill * 58.0F), k + 81, l + 14, 16, 58, false);
+            mc.getTextureManager().bindTexture(BOILER_TEXTURES);
+            drawTexturedModalRect(k + 80, l + 13, 190, 0, 18, 60);
         }
-
-        float fill = fluidStack.amount / (float) tank.getCapacity();
-        drawFluid(new FluidStack(FluidHelper.getWaterFluid(), 1), (int) (fill * 58.0F), k + 81, l + 14, 16, 58, false);
-        mc.getTextureManager().bindTexture(BOILER_TEXTURES);
-        drawTexturedModalRect(k + 80, l + 13, 190, 0, 18, 60);
-        fill = Math.min(tileEntity.getPressure(), 1F);
+        float fill = Math.min(tileEntity.getPressure(), 1F);
         FluidStack stack = new FluidStack(FluidHelper.getWaterFluid(), 1);
         if (FluidRegistry.isFluidRegistered("steam")) {
             stack = new FluidStack(FluidRegistry.getFluid("steam"), 1);

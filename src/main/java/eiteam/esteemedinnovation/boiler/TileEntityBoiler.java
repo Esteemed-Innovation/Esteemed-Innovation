@@ -229,7 +229,6 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements Wren
                         inventory.setStackInSlot(0, container);
                     }
                 }
-
                 //worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
             }
 
@@ -246,6 +245,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements Wren
         if (wasBurning != isBurning()) {
             wasBurning = isBurning();
             markForResync();
+            markDirty();
         }
 
         super.safeUpdate();

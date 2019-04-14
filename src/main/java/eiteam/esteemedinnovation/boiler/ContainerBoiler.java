@@ -41,14 +41,6 @@ public class ContainerBoiler extends Container {
     }
 
     @Override
-    public void addListener(IContainerListener listener) {
-        super.addListener(listener);
-        listener.sendWindowProperty(this, 0, tileEntity.burnTime);
-        listener.sendWindowProperty(this, 1, TileEntityBoiler.getItemBurnTime(ItemStack.EMPTY));
-        listener.sendWindowProperty(this, 2, (int) Math.floor((double) tileEntity.getPressure() * 1000));
-    }
-
-    @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
 
