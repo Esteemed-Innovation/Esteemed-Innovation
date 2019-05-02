@@ -45,7 +45,6 @@ public class SmasherModule extends ContentModule implements ConfigurableModule {
     @Override
     public void registerItems(RegistryEvent.Register<Item> event) {
         setupItemBlock(event, ROCK_SMASHER);
-        setupItemBlock(event, ROCK_SMASHER_DUMMY, (CreativeTabs) null);
 
         SMASHED_ORE = (ItemSmashedOre) setup(event, new ItemSmashedOre(), "smashed_ore");
 
