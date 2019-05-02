@@ -86,9 +86,9 @@ public class ItemKitBag extends Item {
         // 9 slots in the hotbar.
         for (int i = 0; i < InventoryPlayer.getHotbarSize(); i++) {
             ItemStack stackInSlot = inventory.getStackInSlot(i);
-            if (stackInSlot != null && itemStack != stackInSlot) {
+            if (!stackInSlot.isEmpty() && itemStack != stackInSlot) {
                 itemStack.getTagCompound().getTagList("Items", Constants.NBT.TAG_COMPOUND).appendTag(stackInSlot.serializeNBT());
-                inventory.setInventorySlotContents(i, null);
+                inventory.setInventorySlotContents(i, ItemStack.EMPTY);
             }
         }
     }
@@ -106,7 +106,7 @@ public class ItemKitBag extends Item {
             int emptySlotID = inventory.getFirstEmptyStack();
             // loadItemStackFromNBT can in fact return null.
             //noinspection ConstantConditions
-            if (containedStack != null) {
+            if (!containedStack.isEmpty()) {
                 if (emptySlotID == -1) {
                     remainingItems.appendTag(containedStack.serializeNBT());
                 } else {
