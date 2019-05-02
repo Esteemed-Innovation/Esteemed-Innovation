@@ -30,7 +30,6 @@ public class RenderUtility {
      * @param v
      */
     public static void addVertexWithUV(BufferBuilder buffer, double x, double y, double z, double u, double v) {
-        buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         buffer.pos(x, y, z);
         buffer.tex(u, v);
         buffer.endVertex();

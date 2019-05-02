@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
@@ -85,8 +86,9 @@ public class TileEntityPumpRenderer extends TileEntitySpecialRenderer<TileEntity
         float f3 = icon.getMinU();
         float f4 = icon.getMinV() + (icon.getMaxV() - icon.getMinV()) * scaledProgress;
         BufferBuilder buffer = tessellator.getBuffer();
-        buffer.putNormal(0F, 0F, 1F);
+        //buffer.putNormal(0F, 0F, 1F);
         double y = 0.1875D + (1 - scaledProgress) * 1D;
+        buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         RenderUtility.addVertexWithUV(buffer, 0.3125D, y, 0D, f1, f4);
         RenderUtility.addVertexWithUV(buffer, 0.6875D, 6, 0D, f3, f4);
         RenderUtility.addVertexWithUV(buffer, 0.6875D, 1.1875D, 0D, f3, f2);
@@ -99,8 +101,9 @@ public class TileEntityPumpRenderer extends TileEntitySpecialRenderer<TileEntity
             f2 = icon.getMinV();
             f3 = icon.getMinU();
             f4 = (float) (icon.getMinV() + (icon.getMaxV() - icon.getMinV()) * scaledProgress2 * 0.1875);
-            buffer.putNormal(0F, 0F, 1F);
+            //buffer.putNormal(0F, 0F, 1F);
             y = (1 - scaledProgress2) * 0.1875D;
+            buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
             RenderUtility.addVertexWithUV(buffer, 0.3125D, y, 0.0D, f1, f4);
             RenderUtility.addVertexWithUV(buffer, 0.6875D, y, 0.0D, f3, f4);
             RenderUtility.addVertexWithUV(buffer, 0.6875D, 0.1875D, 0.0D, f3, f2);
@@ -119,7 +122,8 @@ public class TileEntityPumpRenderer extends TileEntitySpecialRenderer<TileEntity
         float f2 = icon.getMinV();
         float f3 = icon.getMinU();
         float f4 = (float) (icon.getMinV() + (icon.getMaxV() - icon.getMinV()) * 0.6);
-        buffer.putNormal(0F, 0F, 1F);
+        //buffer.putNormal(0F, 0F, 1F);
+        buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         RenderUtility.addVertexWithUV(buffer, 0.3125D, 0.3125D, 0.0D, f1, f4);
         RenderUtility.addVertexWithUV(buffer, 0.6875D, 0.3125D, 0.0D, f3, f4);
         RenderUtility.addVertexWithUV(buffer, 0.6875D, 0.6875D, 0.0D, f3, f2);
@@ -127,7 +131,8 @@ public class TileEntityPumpRenderer extends TileEntitySpecialRenderer<TileEntity
         tessellator.draw();
 
         GL11.glTranslatef(0.0F, 0.0F, -20 * PX * (progress / 100.0F) - 0.002F);
-        buffer.putNormal(0F, 0F, 1F);
+        //buffer.putNormal(0F, 0F, 1F);
+        buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         RenderUtility.addVertexWithUV(buffer, 0.3125D, 0.6875D, 0.0D, f1, f4);
         RenderUtility.addVertexWithUV(buffer, 0.6875D, 0.6875D, 0.0D, f3, f4);
         RenderUtility.addVertexWithUV(buffer, 0.6875D, 0.3125D, 0.0D, f3, f2);
