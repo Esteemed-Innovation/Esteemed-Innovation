@@ -73,7 +73,7 @@ public class ModelSteamExosuit extends ModelBiped implements ModelExosuit {
      * @see #findDyeIndexFromOreDict(String)
      */
     public static int findDyeIndexFromItemStack(ItemStack itemStack) {
-        if (itemStack == null) {
+        if (itemStack.isEmpty()) {
             return -1;
         }
         for (int id : OreDictionary.getOreIDs(itemStack)) {

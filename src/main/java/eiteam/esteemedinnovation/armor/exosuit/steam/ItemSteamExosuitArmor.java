@@ -518,25 +518,29 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
                 for (int i = 3; i < 10; i++) {
                     if (me.getTagCompound().getCompoundTag("Upgrades").hasKey(Integer.toString(i))) {
                         ItemStack stack = new ItemStack(me.getTagCompound().getCompoundTag("Upgrades").getCompoundTag(Integer.toString(i)));
-                        tooltip.add(TextFormatting.RED + stack.getDisplayName());
+                        if (!stack.isEmpty()) {
+                            tooltip.add(TextFormatting.RED + stack.getDisplayName());
+                        }
                     }
                 }
             }
             if (me.getTagCompound().getCompoundTag("Upgrades").hasKey("2")) {
                 ItemStack stack = new ItemStack(me.getTagCompound().getCompoundTag("Upgrades").getCompoundTag("2"));
                 // TODO: Abstract into API
-                if (stack.getItem() == ArmorModule.ENDER_SHROUD) {
-                    tooltip.add(TextFormatting.DARK_GREEN + I18n.format("esteemedinnovation.exosuit.shroud"));
-                } else {
-                    int dye = -1;
-                    int dyeIndex = ModelSteamExosuit.findDyeIndexFromItemStack(stack);
-                    if (dyeIndex != -1) {
-                        dye = dyeIndex;
-                    }
-                    if (dye != -1) {
-                        tooltip.add(TextFormatting.DARK_GREEN + I18n.format("esteemedinnovation.color." + ModelSteamExosuit.DYES[dye].toLowerCase()));
+                if (!stack.isEmpty()) {
+                    if (stack.getItem() == ArmorModule.ENDER_SHROUD) {
+                        tooltip.add(TextFormatting.DARK_GREEN + I18n.format("esteemedinnovation.exosuit.shroud"));
                     } else {
-                        tooltip.add(TextFormatting.DARK_GREEN + stack.getDisplayName());
+                        int dye = -1;
+                        int dyeIndex = ModelSteamExosuit.findDyeIndexFromItemStack(stack);
+                        if (dyeIndex != -1) {
+                            dye = dyeIndex;
+                        }
+                        if (dye != -1) {
+                            tooltip.add(TextFormatting.DARK_GREEN + I18n.format("esteemedinnovation.color." + ModelSteamExosuit.DYES[dye].toLowerCase()));
+                        } else {
+                            tooltip.add(TextFormatting.DARK_GREEN + stack.getDisplayName());
+                        }
                     }
                 }
             }
