@@ -34,7 +34,6 @@ public class PendulumModule extends ContentModule {
 
     @Override
     public void registerItems(RegistryEvent.Register<Item> event) {
-        setupItemBlock(event, PENDULUM_STRING);
         setupItemBlock(event, PENDULUM_TORCH, ItemRedstonePendulum::new);
     }
 
