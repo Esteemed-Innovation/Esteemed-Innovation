@@ -92,7 +92,8 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
     @CapabilityInject(VillagerData.class)
     public static final Capability<VillagerData> VILLAGER_DATA = null;
     public static final float fallAssistDivisor = 2;
-    public static final float extendedRange = 2.0F; //Range extension in blocks
+
+    private static final float EXTENDED_RANGE_DEFAULT = 2.0f;
     private static final int DRAGON_ROAR_CONSUMPTION_DEFAULT = 20000;
     private static final int RELOADING_CONSUMPTION_DEFAULT = 15;
     private static final int PISTON_PUSH_CONSUMPTION_DEFAULT = 5;
@@ -246,6 +247,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
     public static int jumpBoostConsumption;
     private static int uberReinforcedTankCapacity;
     private static int reinforcedTankCapacity;
+    public static float extendedRange; //Range extension in blocks
     public static int exoConsumption;
     private static boolean enableAnchorAnvilRecipe;
     public static boolean passiveDrain;
@@ -1345,6 +1347,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
 
         reinforcedTankCapacity = config.get(CATEGORY_EXOSUIT_UPGRADES, "The amount of steam the reinforced tank can hold", REINFORCED_TANK_CAPACITY_DEFAULT).getInt();
         uberReinforcedTankCapacity = config.get(CATEGORY_EXOSUIT_UPGRADES, "The amount of steam the heavily reinforced tank can hold", UBER_REINFORCED_TANK_CAPACITY_DEFAULT).getInt();
+        extendedRange = config.get(CATEGORY_EXOSUIT_UPGRADES, "The distance the ExtendoFist upgrade boosts", EXTENDED_RANGE_DEFAULT).getInt();
         //enableDoubleJump = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable double jump", true).getBoolean();
     }
 }
