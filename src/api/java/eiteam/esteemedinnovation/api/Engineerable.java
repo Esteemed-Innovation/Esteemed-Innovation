@@ -7,7 +7,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import javax.annotation.Nonnull;
 
 public interface Engineerable {
-    Pair[] engineerCoordinates();
+    Pair<Integer, Integer>[] engineerCoordinates();
 
     @Nonnull
     ItemStack getStackInSlot(@Nonnull ItemStack me, int var1);

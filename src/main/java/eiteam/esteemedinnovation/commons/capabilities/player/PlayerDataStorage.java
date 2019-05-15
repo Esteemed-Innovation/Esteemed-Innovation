@@ -13,7 +13,6 @@ public class PlayerDataStorage implements Capability.IStorage<PlayerData> {
     @Override
     public NBTBase writeNBT(Capability<PlayerData> capability, PlayerData instance, EnumFacing side) {
         NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setBoolean("IsRangeExtended", instance.isRangeExtended());
         nbt.setInteger("TickCache", instance.getTickCache());
         Float step = instance.getPreviousStepHeight();
         if (step != null) {
@@ -46,7 +45,6 @@ public class PlayerDataStorage implements Capability.IStorage<PlayerData> {
             instance.setPreviousStepHeight(null);
         }
         instance.setTickCache(nbt.getInteger("TickCache"));
-        instance.setRangeExtended(nbt.getBoolean("IsRangeExtended"));
         NBTTagList unlockedPieces = nbt.getTagList("UnlockedBookPieces", Constants.NBT.TAG_STRING);
         for (int i = 0; i < unlockedPieces.tagCount(); i++) {
             instance.setHasUnlockedBookPiece(unlockedPieces.getStringTagAt(i), true);

@@ -233,7 +233,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
         NBTTagCompound stc = new NBTTagCompound();
         stack.writeToNBT(stc);
         me.getTagCompound().getCompoundTag("Upgrades").setTag(Integer.toString(var1), stc);
-        if (var1 == 5 && armorType == EntityEquipmentSlot.CHEST) {
+        if (var1 == 5 && armorType == EntityEquipmentSlot.CHEST && !stack.isEmpty()) {
             me.getTagCompound().setInteger("SteamStored", 0);
             me.getTagCompound().setInteger("SteamCapacity", ((ExosuitTank) stack.getItem()).getStorage(me));
             if (stack.getItem() instanceof BlockTankItem && stack.getItemDamage() == 1) {

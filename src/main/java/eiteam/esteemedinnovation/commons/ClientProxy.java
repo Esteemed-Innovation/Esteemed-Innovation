@@ -4,18 +4,11 @@ import codechicken.lib.render.CCIconRegister;
 import eiteam.esteemedinnovation.boiler.GuiBoiler;
 import eiteam.esteemedinnovation.commons.particle.ParticleAlphabeticGeneric;
 import eiteam.esteemedinnovation.metalcasting.crucible.BlockCrucible;
-import eiteam.esteemedinnovation.misc.PlayerController;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.PlayerControllerMP;
-import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleDigging;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 
 public class ClientProxy extends CommonProxy {
@@ -55,39 +48,4 @@ public class ClientProxy extends CommonProxy {
         }
     }
 
-    private void setController(Minecraft minecraft) {
-        PlayerControllerMP controller = minecraft.playerController;
-        World world = minecraft.world;
-        if (!(controller instanceof PlayerController)) {
-            GameType type = world.getWorldInfo().getGameType();
-            NetHandlerPlayClient net = minecraft.getConnection();
-            PlayerController ourController = new PlayerController(minecraft, net);
-            ourController.setGameType(type);
-            minecraft.playerController = ourController;
-        }
-    }
-
-    @Override
-    public void extendRange(Entity entity, double amount) {
-        super.extendRange(entity, amount);
-        Minecraft mc = Minecraft.getMinecraft();
-        EntityPlayer player = mc.player;
-        if (entity == player) {
-            setController(mc);
-
-            ((PlayerController) mc.playerController).setReachDistanceExtension(((PlayerController) mc.playerController).getReachDistanceExtension() + amount);
-        }
-    }
-
-    @Override
-    public void checkRange(EntityLivingBase entity) {
-        Minecraft mc = Minecraft.getMinecraft();
-        EntityPlayer player = mc.player;
-        if (entity == player) {
-            setController(mc);
-            if (((PlayerController) mc.playerController).getReachDistanceExtension() <= 2.0F) {
-                extendRange(entity, 2.0F - ((PlayerController) mc.playerController).getReachDistanceExtension());
-            }
-        }
-    }
 }

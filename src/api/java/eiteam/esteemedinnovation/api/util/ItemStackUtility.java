@@ -67,7 +67,7 @@ public class ItemStackUtility {
      * @param player The player
      * @return The main hand itemstack, offhand itemstack, or null if both were empty itemstacks.
      */
-    @Nullable
+    @Nonnull
     public static ItemStack getHeldItemStack(EntityPlayer player) {
         ItemStack mainHand = player.getHeldItemMainhand();
         ItemStack offHand = player.getHeldItemOffhand();
@@ -86,16 +86,16 @@ public class ItemStackUtility {
      * @return boolean
      */
     public static boolean inventoryHasItem(IInventory inventory, Item check) {
-        return findItemStackFromInventory(inventory, check) != null;
+        return !findItemStackFromInventory(inventory, check).isEmpty();
     }
 
     /**
      * Searches for an item in the inventory and returns its stack.
      * @param haystack The inventory to search in
      * @param needle The item to search for
-     * @return The itemstack, or null
+     * @return The itemstack, or {@link ItemStack#EMPTY}
      */
-    @Nullable
+    @Nonnull
     public static ItemStack findItemStackFromInventory(IInventory haystack, Item needle) {
         for (int slot = 0; slot < haystack.getSizeInventory(); slot++) {
             ItemStack inSlot = haystack.getStackInSlot(slot);
@@ -106,7 +106,7 @@ public class ItemStackUtility {
                 return inSlot;
             }
         }
-        return null;
+        return ItemStack.EMPTY;
     }
 
     /**

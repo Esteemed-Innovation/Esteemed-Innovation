@@ -22,11 +22,6 @@ public interface PlayerData {
      */
     int getTickCache();
 
-    /**
-     * Gets whether the player's range has been extended (for example by the Extendo Fist)
-     * @return boolean
-     */
-    boolean isRangeExtended();
 
     /**
      * Gets the player's previous X, Z motions.
@@ -47,11 +42,6 @@ public interface PlayerData {
      */
     void setTickCache(int value);
 
-    /**
-     * Sets the player's range-extended status.
-     * @param value boolean
-     */
-    void setRangeExtended(boolean value);
 
     /**
      * Sets the player's previous X, Z motions.
@@ -76,7 +66,6 @@ public interface PlayerData {
     class DefaultImplementation implements PlayerData {
         private Float previousStepHeight = null;
         private int tickCache = -1;
-        private boolean isRangeExtended = false;
         private Pair<Double, Double> lastMotions = null;
         private Set<String> unlockedPieces = new HashSet<>();
 
@@ -88,11 +77,6 @@ public interface PlayerData {
         @Override
         public int getTickCache() {
             return tickCache;
-        }
-
-        @Override
-        public boolean isRangeExtended() {
-            return isRangeExtended;
         }
 
         @Override
@@ -108,11 +92,6 @@ public interface PlayerData {
         @Override
         public void setTickCache(int value) {
             tickCache = value;
-        }
-
-        @Override
-        public void setRangeExtended(boolean value) {
-            isRangeExtended = value;
         }
 
         @Override

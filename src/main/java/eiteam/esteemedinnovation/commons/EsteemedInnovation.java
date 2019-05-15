@@ -118,7 +118,7 @@ public class EsteemedInnovation {
         ContentModuleHandler.preInit();
 
         CapabilityManager.INSTANCE.register(PlayerData.class, new PlayerDataStorage(),
-          PlayerData.DefaultImplementation.class);
+          PlayerData.DefaultImplementation::new);
 
         proxy.registerTexturesToStitch();
     }

@@ -76,14 +76,14 @@ public class GenericTickHandler {
               */
             ItemStack mainHandStack = mc.player.getHeldItemMainhand();
             ItemStack offHandStack = mc.player.getHeldItemOffhand();
-            if (mainHandStack != null && mainHandStack.getItem() instanceof SteamTool) {
+            if (!mainHandStack.isEmpty() && mainHandStack.getItem() instanceof SteamTool) {
                 try {
                     itemInMainHandField.set(mc.getItemRenderer(), mainHandStack);
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
             }
-            if (offHandStack != null && offHandStack.getItem() instanceof SteamTool) {
+            if (!offHandStack.isEmpty() && offHandStack.getItem() instanceof SteamTool) {
                 try {
                     itemInOffHandField.set(mc.getItemRenderer(), offHandStack);
                 } catch (IllegalAccessException e) {
@@ -97,7 +97,7 @@ public class GenericTickHandler {
             }
             EntityPlayer player = mc.player;
             ItemStack held = ItemStackUtility.getHeldItemStack(player);
-            if (mc.gameSettings.keyBindUseItem.isKeyDown() && player.isSneaking() && held != null &&
+            if (mc.gameSettings.keyBindUseItem.isKeyDown() && player.isSneaking() && !held.isEmpty() &&
               held.getItem() instanceof ItemBlock) {
                 RayTraceResult pos = mc.objectMouseOver;
                 if (pos != null) {
@@ -117,7 +117,7 @@ public class GenericTickHandler {
             ItemStack hat = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
             Item monacle = ArmorModule.MONOCLE;
             Item goggles = ArmorModule.GOGGLES;
-            boolean hasHat = hat != null && (hat.getItem() == monacle ||
+            boolean hasHat = !hat.isEmpty() && (hat.getItem() == monacle ||
               hat.getItem() == goggles || (hat.getItem() == ArmorModule.STEAM_EXO_HEAD &&
               (((ItemSteamExosuitArmor) hat.getItem()).hasUpgrade(hat, goggles) ||
                 ((ItemSteamExosuitArmor) hat.getItem()).hasUpgrade(hat, monacle))));
@@ -173,13 +173,13 @@ public class GenericTickHandler {
                 }
             }
             ItemStack item = player.inventory.getStackInSlot(player.inventory.currentItem);
-            if (item != null && item.getItem() == SPYGLASS) {
+            if (!item.isEmpty() && item.getItem() == SPYGLASS) {
                 if (mc.gameSettings.thirdPersonView == 0) {
                     inUse = true;
                     this.renderTelescopeOverlay();
                 }
             }
-            if (!wasInUse && item != null && player.isHandActive() && item.getItem() == MUSKET &&
+            if (!wasInUse && !item.isEmpty() && player.isHandActive() && item.getItem() == MUSKET &&
               UtilEnhancements.getEnhancementFromItem(item) == SPYGLASS) {
                 boolean isShooting = false;
                 if (item.getTagCompound() != null) {
@@ -207,7 +207,7 @@ public class GenericTickHandler {
             if (inUse && !wasInUse) {
                 zoom = 0.0F;
             }
-            if (inUse && mc.gameSettings.keyBindAttack.isKeyDown() && zoom > 0F && item != null &&
+            if (inUse && mc.gameSettings.keyBindAttack.isKeyDown() && zoom > 0F && !item.isEmpty() &&
               item.getItem() == SPYGLASS) {
                 zoom -= 1.0F;
                 mc.gameSettings.fovSetting += 2.5F;
@@ -215,7 +215,7 @@ public class GenericTickHandler {
 
             }
             if (inUse && mc.gameSettings.keyBindUseItem.isKeyDown() && mc.gameSettings.fovSetting > 5F &&
-              item != null && item.getItem() == SPYGLASS) {
+              !item.isEmpty() && item.getItem() == SPYGLASS) {
                 zoom += 1.0F;
                 mc.gameSettings.fovSetting -= 2.5F;
                 mc.gameSettings.mouseSensitivity -= 0.01F;

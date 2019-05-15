@@ -276,7 +276,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
         JETPACK = setup(event, new ItemJetpackUpgrade(), "jetpack");
         WINGS = setup(event, new ItemWingsUpgrade(), "wings");
         POWER_FIST = setup(event, new ItemPowerFistUpgrade(), "power_fist");
-        EXTENDO_FIST = setup(event, new ItemSteamExosuitUpgrade(ExosuitSlot.BODY_HAND, resource("extendoFist"), null, 0), "extendo_fist");
+        EXTENDO_FIST = setup(event, new ItemExtendoFistUpgrade(), "extendo_fist");
         THRUSTERS = setup(event, new ItemSidepackUpgrade(), "thrusters");
         FALL_ASSIST = setup(event, new ItemFallAssistUpgrade(), "fall_assist");
         LEAP_ACTUATOR = setup(event, new ItemLeapActuatorUpgrade(), "jump_assist");
