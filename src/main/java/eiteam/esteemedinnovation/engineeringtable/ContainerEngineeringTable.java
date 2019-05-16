@@ -100,6 +100,37 @@ public class ContainerEngineeringTable extends Container {
     @Nonnull
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int index) {
+        Slot slot = this.inventorySlots.get(index);
+
+        if(slot != null && slot.getHasStack()) {
+            ItemStack itemStack = slot.getStack();
+
+            //If clicked slot is in the player inventory
+            if(index <= 41 && index != 0) {
+                //Attempt to put it in engineering slot
+                if(!mergeItemStack(itemStack, 0, 1, false)) {
+                    //Now try the other slots (not player inventory
+                    if (!mergeItemStack(itemStack, 42, inventorySlots.size(), false)) {
+                        return ItemStack.EMPTY;
+                    }
+                }
+            } else {
+                //Clicked within engineering slot or modifiers
+                //Try placing itemstack in inventory
+                //If we don't want shift click to go into offhand slot, either need to change the order of the slots,
+                //or nest this like the one above
+                if(!mergeItemStack(itemStack, 1, 42, false)) {
+                    return ItemStack.EMPTY;
+                }
+            }
+
+            if(itemStack.isEmpty()) {
+                slot.putStack(ItemStack.EMPTY);
+            } else {
+                slot.onSlotChanged();
+            }
+        }
+
         return ItemStack.EMPTY;
     }
 
