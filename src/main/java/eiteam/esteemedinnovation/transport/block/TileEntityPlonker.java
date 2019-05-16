@@ -21,21 +21,30 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.function.Predicate;
 
-public class TileEntityPlonker extends SteamTransporterTileEntity implements Wrenchable, WrenchDisplay, IInventory {
+public class TileEntityPlonker extends SteamTransporterTileEntity implements Wrenchable, WrenchDisplay {
     private static final String MODE_KEY = "Mode";
     private static final String INV_KEY = "Inventory";
     private boolean prevRedstoneActivated;
     private boolean curRedstoneActivated;
     @Nonnull
     private Mode mode = Mode.ALWAYS_ON;
-    private ItemStack inventory;
+    private ItemStackHandler inventory = new ItemStackHandler(1) {
+        @Override
+        public int getSlotLimit(int slot) {
+            return 1;
+        }
+    };
 
     public TileEntityPlonker() {
         super(EnumFacing.VALUES);
@@ -63,9 +72,9 @@ public class TileEntityPlonker extends SteamTransporterTileEntity implements Wre
 
         curRedstoneActivated = world.isBlockPowered(pos);
 
-        if (canPlace() && world instanceof WorldServer) {
+        if (canPlace() && !world.isRemote) {
             FakePlayer player = FakePlayerFactory.getMinecraft((WorldServer) world);
-            inventory.getItem().onItemUse(player, world, getOffsetPos(dir), player.getActiveHand(), dir.getOpposite(), 0.5F, 0.5F, 0.5F);
+            inventory.getStackInSlot(0).onItemUse(player, world, getOffsetPos(dir), player.getActiveHand(), dir.getOpposite(), 0.5F, 0.5F, 0.5F);
             if (mode == Mode.ALWAYS_ON) {
                 decrSteam(TransportationModule.plonkerConsumption);
             }
@@ -87,7 +96,7 @@ public class TileEntityPlonker extends SteamTransporterTileEntity implements Wre
     }
 
     private boolean canPlace() {
-        return inventory != null && mode.canPlace(this) && isTargetAvailable();
+        return !inventory.getStackInSlot(0).isEmpty() && mode.canPlace(this) && isTargetAvailable();
     }
 
     @Override
@@ -111,88 +120,21 @@ public class TileEntityPlonker extends SteamTransporterTileEntity implements Wre
         return true;
     }
 
-    @Override
-    public int getSizeInventory() {
-        return 1;
-    }
-
-    @Nullable
-    @Override
-    public ItemStack getStackInSlot(int index) {
-        return inventory;
-    }
-
-    @Nullable
-    @Override
-    public ItemStack decrStackSize(int index, int count) {
-        inventory.shrink(1);
-        return inventory;
-    }
-
-    @Nullable
-    @Override
-    public ItemStack removeStackFromSlot(int index) {
-        ItemStack cache = inventory;
-        inventory = null;
-        return cache;
-    }
-
-    @Override
-    public void setInventorySlotContents(int index, @Nullable ItemStack stack) {
-        inventory = stack;
-    }
-
-    @Override
-    public int getInventoryStackLimit() {
-        return 64;
-    }
-
-    @Override
-    public boolean isUsableByPlayer(EntityPlayer player) {
-        return false;
-    }
-
-    @Override
-    public void openInventory(EntityPlayer player) {}
-
-    @Override
-    public void closeInventory(EntityPlayer player) {}
-
-    @Override
-    public boolean isItemValidForSlot(int index, ItemStack stack) {
-        return stack.getItem() instanceof ItemBlock;
-    }
-
-    @Override
-    public void clear() {
-        inventory = null;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        // TODO
-        return inventory == null;
-    }
-
-    @Override
-    public boolean hasCustomName() {
-        return false;
-    }
 
     @Override
     public void readFromNBT(NBTTagCompound access) {
         super.readFromNBT(access);
         mode = Mode.LOOKUP[access.getInteger(MODE_KEY)];
-        inventory = access.hasKey(INV_KEY) ? new ItemStack(access.getCompoundTag(INV_KEY)) : null;
+        if (access.hasKey(INV_KEY)) {
+            inventory.deserializeNBT((NBTTagCompound) access.getTag(INV_KEY));
+        }
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound access) {
         super.writeToNBT(access);
         access.setInteger(MODE_KEY, mode.ordinal());
-        if (inventory != null) {
-            access.setTag(INV_KEY, inventory.serializeNBT());
-        }
+        access.setTag(INV_KEY, inventory.serializeNBT());
         return access;
     }
 
@@ -207,6 +149,19 @@ public class TileEntityPlonker extends SteamTransporterTileEntity implements Wre
         super.onDataPacket(net, pkt);
         readFromNBT(pkt.getNbtCompound());
         markForResync();
+    }
+
+    @Override
+    public boolean hasCapability(@Nonnull Capability<?> capability, EnumFacing facing) {
+        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
+    }
+
+    @Override
+    public <T> T getCapability(@Nonnull Capability<T> capability, EnumFacing facing) {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory);
+        }
+        return super.getCapability(capability, facing);
     }
 
     enum Mode {
@@ -239,20 +194,5 @@ public class TileEntityPlonker extends SteamTransporterTileEntity implements Wre
         boolean canPlace(TileEntityPlonker plonker) {
             return canPlace.test(plonker);
         }
-    }
-
-    // Ignore this crap...
-
-    @Override
-    public int getField(int id) {
-        return 0;
-    }
-
-    @Override
-    public void setField(int id, int value) {}
-
-    @Override
-    public int getFieldCount() {
-        return 0;
     }
 }
