@@ -1,10 +1,10 @@
 package eiteam.esteemedinnovation.transport.item;
 
+import eiteam.esteemedinnovation.commons.util.ItemStackHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -38,7 +38,7 @@ public class BlockItemMortar extends Block {
         }
 
         ItemStack heldItem = player.getHeldItem(hand);
-        if (heldItem != null && heldItem.getItem() == ASTROLABE &&
+        if (!heldItem.isEmpty() && heldItem.getItem() == ASTROLABE &&
           heldItem.hasTagCompound() && heldItem.getTagCompound().hasKey("targetX") &&
           world.provider.getDimension() == heldItem.getTagCompound().getInteger("dim")) {
             tile.xTarget = heldItem.getTagCompound().getInteger("targetX");
@@ -52,7 +52,7 @@ public class BlockItemMortar extends Block {
     public void breakBlock(World world, BlockPos pos, IBlockState state) {
         TileEntityItemMortar tileentitymortar = (TileEntityItemMortar) world.getTileEntity(pos);
         if (tileentitymortar != null) {
-            InventoryHelper.dropInventoryItems(world, pos, tileentitymortar);
+            ItemStackHelper.dropItems(tileentitymortar.inventory, world, pos);
             world.updateComparatorOutputLevel(pos, state.getBlock());
         }
         super.breakBlock(world, pos, state);

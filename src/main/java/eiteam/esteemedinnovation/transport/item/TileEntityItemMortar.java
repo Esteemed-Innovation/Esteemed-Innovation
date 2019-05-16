@@ -4,9 +4,7 @@ import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.transport.TransportationModule;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -14,14 +12,23 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
-public class TileEntityItemMortar extends SteamTransporterTileEntity implements IInventory {
+import javax.annotation.Nonnull;
+
+public class TileEntityItemMortar extends SteamTransporterTileEntity {
     public int xTarget;
     public int zTarget;
     public boolean hasTarget = false;
     public int fireTicks = 0;
-    private ItemStack inventory;
+    protected ItemStackHandler inventory = new ItemStackHandler(1) {
+        @Override
+        public int getSlotLimit(int slot) {
+            return 1;
+        }
+    };
 
     public TileEntityItemMortar() {
         super(new EnumFacing[] {
@@ -43,7 +50,7 @@ public class TileEntityItemMortar extends SteamTransporterTileEntity implements 
         hasTarget = nbt.getBoolean("hasTarget");
 
         if (nbt.hasKey("inventory")) {
-            inventory = new ItemStack(nbt.getCompoundTag("inventory"));
+            inventory.deserializeNBT(nbt.getCompoundTag("inventory"));
         }
     }
 
@@ -55,12 +62,8 @@ public class TileEntityItemMortar extends SteamTransporterTileEntity implements 
         nbt.setShort("fireTicks", (short) fireTicks);
 
         nbt.setBoolean("hasTarget", hasTarget);
+        nbt.setTag("inventory", inventory.serializeNBT());
 
-        if (inventory != null) {
-            NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-            inventory.writeToNBT(nbttagcompound1);
-            nbt.setTag("inventory", nbttagcompound1);
-        }
 
         return nbt;
     }
@@ -95,10 +98,10 @@ public class TileEntityItemMortar extends SteamTransporterTileEntity implements 
     public void safeUpdate() {
         if (!world.isRemote) {
             BlockPos thisPos = new BlockPos(pos.getX(), pos.getY() + 1, pos.getZ());
-            ItemStack stackInSlotZero = getStackInSlot(0);
-            if ((stackInSlotZero != null && world.canBlockSeeSky(thisPos)) || fireTicks >= 60) {
-                ItemStack stack = null;
-                if (fireTicks < 60 && stackInSlotZero != null) {
+            ItemStack stackInSlotZero = inventory.getStackInSlot(0);
+            if ((!stackInSlotZero.isEmpty() && world.canBlockSeeSky(thisPos)) || fireTicks >= 60) {
+                ItemStack stack = ItemStack.EMPTY;
+                if (fireTicks < 60 && !stackInSlotZero.isEmpty()) {
                     stack = stackInSlotZero.copy();
                 }
                 if (getSteamShare() > 2000 && hasTarget) {
@@ -108,7 +111,9 @@ public class TileEntityItemMortar extends SteamTransporterTileEntity implements 
                     fireTicks++;
                     if (fireTicks == 10) {
                         world.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F,
-                          EsteemedInnovation.SOUND_HISS, SoundCategory.BLOCKS, Blocks.ANVIL.getSoundType().getVolume(), 0.9F, false);
+                          EsteemedInnovation.SOUND_HISS, SoundCategory.BLOCKS,
+                          Blocks.ANVIL.getSoundType(world.getBlockState(thisPos), world, thisPos, null).getVolume(),
+                          0.9F, false);
                     }
                     if (fireTicks == 60 && stack != null) {
                         world.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F,
@@ -122,9 +127,9 @@ public class TileEntityItemMortar extends SteamTransporterTileEntity implements 
                         entityItem.motionY = 1.0F;
                         if (stack.getCount() > 1) {
                             stack.shrink(1);
-                            setInventorySlotContents(0, stack);
+                            inventory.setStackInSlot(0, stack);
                         } else {
-                            setInventorySlotContents(0, null);
+                            inventory.setStackInSlot(0, ItemStack.EMPTY);
                         }
                     }
                     if (fireTicks == 80) {
@@ -150,136 +155,17 @@ public class TileEntityItemMortar extends SteamTransporterTileEntity implements 
         super.safeUpdate();
     }
 
+
     @Override
-    public int getSizeInventory() {
-        return 1;
+    public boolean hasCapability(@Nonnull Capability<?> capability, EnumFacing facing) {
+        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
     }
 
     @Override
-    public ItemStack getStackInSlot(int slot) {
-        return this.inventory;
-    }
-
-    @Override
-    public ItemStack decrStackSize(int slot, int var2) {
-        if (inventory != null) {
-            ItemStack itemstack;
-
-            if (inventory.getCount() <= var2) {
-                itemstack = inventory;
-                inventory = null;
-                return itemstack;
-            } else {
-                itemstack = inventory.splitStack(var2);
-
-                if (inventory.isEmpty()) {
-                    inventory = null;
-                }
-
-                return itemstack;
-            }
-        } else {
-            return null;
+    public <T> T getCapability(@Nonnull Capability<T> capability, EnumFacing facing) {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory);
         }
-    }
-
-    @Override
-    public ItemStack removeStackFromSlot(int slot) {
-        return inventory;
-    }
-
-    @Override
-    public void setInventorySlotContents(int slot, ItemStack stack) {
-        inventory = stack;
-    }
-
-    @Override
-    public String getName() {
-        return null;
-    }
-
-    @Override
-    public boolean hasCustomName() {
-        return false;
-    }
-
-    @Override
-    public ITextComponent getDisplayName() {
-        return null;
-    }
-
-    @Override
-    public int getInventoryStackLimit() {
-        return 1;
-    }
-
-    @Override
-    public boolean isUsableByPlayer(EntityPlayer var1) {
-        return true;
-    }
-
-    @Override
-    public void openInventory(EntityPlayer player) {
-    }
-
-    @Override
-    public void closeInventory(EntityPlayer player) {}
-
-    @Override
-    public boolean isItemValidForSlot(int var1, ItemStack var2) {
-        return true;
-    }
-
-    @Override
-    public int getField(int id) {
-        switch (id) {
-            case 0: {
-                return fireTicks;
-            }
-            case 1: {
-                return xTarget;
-            }
-            case 2: {
-                return zTarget;
-            }
-            default: {
-                return 0;
-            }
-        }
-    }
-
-    @Override
-    public void setField(int id, int value) {
-        switch (id) {
-            case 0: {
-                fireTicks = value;
-                return;
-            }
-            case 1: {
-                xTarget = value;
-                return;
-            }
-            case 2: {
-                zTarget = value;
-                return;
-            }
-            default: {}
-        }
-    }
-
-    @Override
-    public int getFieldCount() {
-        return 3;
-    }
-
-    @Override
-    public void clear() {
-        inventory = null;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        // TODO
-        return inventory == null;
+        return super.getCapability(capability, facing);
     }
 }

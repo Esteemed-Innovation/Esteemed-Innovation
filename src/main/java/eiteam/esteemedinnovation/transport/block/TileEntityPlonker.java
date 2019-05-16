@@ -15,12 +15,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
@@ -39,7 +41,13 @@ public class TileEntityPlonker extends SteamTransporterTileEntity implements Wre
     private boolean curRedstoneActivated;
     @Nonnull
     private Mode mode = Mode.ALWAYS_ON;
-    private ItemStackHandler inventory = new ItemStackHandler(1) {
+    protected ItemStackHandler inventory = new ItemStackHandler(1) {
+
+        @Override
+        public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+            return stack.getItem() instanceof ItemBlock;
+        }
+
         @Override
         public int getSlotLimit(int slot) {
             return 1;
@@ -74,8 +82,10 @@ public class TileEntityPlonker extends SteamTransporterTileEntity implements Wre
 
         if (canPlace() && !world.isRemote) {
             FakePlayer player = FakePlayerFactory.getMinecraft((WorldServer) world);
-            inventory.getStackInSlot(0).onItemUse(player, world, getOffsetPos(dir), player.getActiveHand(), dir.getOpposite(), 0.5F, 0.5F, 0.5F);
-            if (mode == Mode.ALWAYS_ON) {
+            ItemStack stack = inventory.getStackInSlot(0);
+            player.setHeldItem(EnumHand.MAIN_HAND, stack);
+            EnumActionResult result = ForgeHooks.onPlaceItemIntoWorld(stack, player, world, getOffsetPos(dir), dir.getOpposite(), 0.5f, 0.5f, 0.5f, EnumHand.MAIN_HAND);
+            if (result == EnumActionResult.SUCCESS || mode == Mode.ALWAYS_ON) {
                 decrSteam(TransportationModule.plonkerConsumption);
             }
         }

@@ -2,6 +2,7 @@ package eiteam.esteemedinnovation.transport.block;
 
 import eiteam.esteemedinnovation.api.block.BlockSteamTransporter;
 import eiteam.esteemedinnovation.api.wrench.Wrenchable;
+import eiteam.esteemedinnovation.commons.util.ItemStackHelper;
 import eiteam.esteemedinnovation.commons.util.WorldHelper;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;
@@ -56,8 +57,8 @@ public class BlockPlonker extends BlockSteamTransporter implements Wrenchable {
     @Override
     public void breakBlock(World world, BlockPos pos, IBlockState state) {
         TileEntity tile = world.getTileEntity(pos);
-        if (tile instanceof IInventory) {
-            InventoryHelper.dropInventoryItems(world, pos, (IInventory) tile);
+        if (tile instanceof TileEntityPlonker) {
+            ItemStackHelper.dropItems(((TileEntityPlonker)tile).inventory, world,  pos);
         }
         super.breakBlock(world, pos, state);
     }
