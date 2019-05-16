@@ -37,13 +37,14 @@ public class SteamingRegistry {
      * Gets the steaming result for the given item. If there is no steaming recipe, returns the result of
      * {@link FurnaceRecipes#getSmeltingResult}.
      */
+    @Nonnull
     public static ItemStack getSteamingResult(@Nonnull ItemStack input) {
         ItemStack steaming = getSteamingResultNoSmelting(input);
-        return steaming == null ? FurnaceRecipes.instance().getSmeltingResult(input) : steaming;
+        return steaming.isEmpty() ? FurnaceRecipes.instance().getSmeltingResult(input) : steaming;
     }
 
     /**
-     * Gets the steaming result for the given item. If there is no steaming recipe, returns null.
+     * Gets the steaming result for the given item. If there is no steaming recipe, returns {@link ItemStack#EMPTY}.
      */
     public static ItemStack getSteamingResultNoSmelting(@Nonnull ItemStack input) {
         for (Map.Entry<ItemStack, ItemStack> entry : steamingRecipes.entrySet()) {
@@ -51,6 +52,6 @@ public class SteamingRegistry {
                 return entry.getValue();
             }
         }
-        return null;
+        return ItemStack.EMPTY;
     }
 }
