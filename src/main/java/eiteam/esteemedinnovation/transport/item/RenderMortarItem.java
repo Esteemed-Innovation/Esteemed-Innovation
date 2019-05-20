@@ -13,7 +13,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class RenderMortarItem extends Render {
+public class RenderMortarItem extends Render<EntityMortarItem> {
     private static final ResourceLocation texture = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/models/mortar_item.png");
     private static final ResourceLocation b4 = new ResourceLocation("minecraft:textures/blocks/destroy_stage_4.png");
     private static final ResourceLocation b5 = new ResourceLocation("minecraft:textures/blocks/destroy_stage_5.png");
@@ -28,10 +28,9 @@ public class RenderMortarItem extends Render {
     }
 
     @Override
-    public void doRender(Entity var1, double x, double y, double z, float var8, float var9) {
+    public void doRender(EntityMortarItem myItem, double x, double y, double z, float entityYaw, float partialTicks) {
         GL11.glPushMatrix();
-        GL11.glTranslated(x, y, z);
-        EntityMortarItem myItem = (EntityMortarItem) var1;
+        GL11.glTranslated(x, y + 0.15f, z);
 
         if (myItem.onGround && myItem.lastTickPosX == myItem.posX && myItem.lastTickPosZ == myItem.posZ) {
             Minecraft.getMinecraft().renderEngine.bindTexture(breakTextures[myItem.randomSprite]);
@@ -66,12 +65,12 @@ public class RenderMortarItem extends Render {
         if (renderManager.options.fancyGraphics || item.getItem().getItem() instanceof ItemBlock) {
             GL11.glRotatef(Minecraft.getMinecraft().player.ticksExisted * 3 % 360, 0.0F, 1.0F, 0.0F);
         }
-        renderManager.renderEntity(item, 0D, 0D, 0D, 0F, 0F, false);
+        renderManager.renderEntity(item, 0D, myItem.motionY <= 0.01 ? 0D : -3D, 0D, 0F, 0F, false);
         GL11.glPopMatrix();
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(Entity var1) {
+    protected ResourceLocation getEntityTexture(EntityMortarItem var1) {
         return null;
     }
 }

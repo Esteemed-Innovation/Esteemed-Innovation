@@ -85,7 +85,7 @@ public class EntityMortarItem extends EntityItem {
         lastPos = posY;
         lastOnGround = onGround;
         List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(this,
-          getEntityBoundingBox().grow(motionX, motionY, motionZ));
+          getEntityBoundingBox().grow(motionX + 0.5F, motionY, motionZ + 0.5F));
         for (Entity entity : list) {
             if (entity.canBeCollidedWith() && motionY < -1.0F) {
                 entity.attackEntityFrom(DamageSource.FALLING_BLOCK, 3.0F);

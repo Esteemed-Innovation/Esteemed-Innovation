@@ -311,10 +311,14 @@ public class TransportationModule extends ContentModule implements ConfigurableM
         registerModel(ASTROLABE);
     }
 
+    @Override
+    public void preInitClient() {
+        RenderingRegistry.registerEntityRenderingHandler(EntityMortarItem.class, RenderMortarItem::new);
+    }
+
     @SideOnly(Side.CLIENT)
     @Override
     public void initClient() {
-        RenderingRegistry.registerEntityRenderingHandler(EntityMortarItem.class, RenderMortarItem::new);
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityItemMortar.class, new TileEntityItemMortarRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPump.class, new TileEntityPumpRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityValvePipe.class, new TileEntityValvePipeRenderer());
