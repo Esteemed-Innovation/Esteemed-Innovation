@@ -110,14 +110,12 @@ public class TileEntityItemMortar extends SteamTransporterTileEntity {
                     }
                     fireTicks++;
                     if (fireTicks == 10) {
-                        world.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F,
-                          EsteemedInnovation.SOUND_HISS, SoundCategory.BLOCKS,
-                          Blocks.ANVIL.getSoundType(world.getBlockState(thisPos), world, thisPos, null).getVolume(),
-                          0.9F, false);
+                        world.playSound(null, pos, EsteemedInnovation.SOUND_HISS, SoundCategory.BLOCKS,
+                          0.3F,0.9F);
                     }
-                    if (fireTicks == 60 && stack != null) {
-                        world.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F,
-                          EsteemedInnovation.SOUND_CANNON, SoundCategory.BLOCKS, 2F, 0.8F, false);
+                    if (fireTicks == 60 && !stack.isEmpty()) {
+                        world.playSound(null, pos, EsteemedInnovation.SOUND_CANNON, SoundCategory.BLOCKS,
+                          2F, 0.8F);
                         decrSteam(2000);
                         ItemStack stack2 = stack.copy();
                         stack2.setCount(1);

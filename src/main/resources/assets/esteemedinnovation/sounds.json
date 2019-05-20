@@ -1,6 +1,7 @@
 {
   "hiss":{
     "category":"master",
+    "subtitle": "esteemedinnovation.subtitle.hiss",
     "sounds":[
       {
         "name":"esteemedinnovation:hiss",
@@ -10,6 +11,7 @@
   },
   "rocket":{
     "category":"master",
+    "subtitle": "esteemedinnovation.subtitle.rocket",
     "sounds":[
       {
         "name":"esteemedinnovation:rocket",
@@ -19,6 +21,7 @@
   },
   "wrench":{
     "category":"master",
+    "subtitle": "esteemedinnovation.subtitle.wrench",
     "sounds":[
       {
         "name":"esteemedinnovation:wrench",
@@ -28,6 +31,7 @@
   },
   "cannon":{
     "category":"master",
+    "subtitle": "esteemedinnovation.subtitle.cannon",
     "sounds":[
       {
         "name":"esteemedinnovation:cannon",
@@ -37,6 +41,7 @@
   },
   "leaking":{
     "category":"master",
+    "subtitle": "esteemedinnovation.subtitle.leaking",
     "sounds":[
       {
         "name":"esteemedinnovation:leaking",
@@ -46,6 +51,7 @@
   },
   "horn":{
     "category":"master",
+    "subtitle": "esteemedinnovation.subtitle.whistle",
     "sounds":[
       {
         "name":"esteemedinnovation:steamwhistle",

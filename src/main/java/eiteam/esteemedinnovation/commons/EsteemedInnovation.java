@@ -19,6 +19,7 @@ import eiteam.esteemedinnovation.metalcasting.MetalcastingBookSection;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.MinecraftForge;
@@ -90,9 +91,8 @@ public class EsteemedInnovation {
 
     //TODO: Fix sound registering
     private static SoundEvent registerSound(String soundName) {
-        //final ResourceLocation soundID = new ResourceLocation(MOD_ID, soundName);
-        //return GameRegistry.register(new SoundEvent(soundID).setRegistryName(soundID));
-        return null;
+        final ResourceLocation soundID = new ResourceLocation(MOD_ID, soundName);
+        return new SoundEvent(soundID);
     }
 
     @Mod.EventHandler
