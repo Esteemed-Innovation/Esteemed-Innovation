@@ -34,6 +34,7 @@ public class ContainerEngineeringTable extends Container {
     private int prevNumSlots;
     private int numBaseSlots;
     private boolean upgradeSlotsInitialized;
+    private ItemStack prevItemStack = ItemStack.EMPTY;
 
     public ContainerEngineeringTable(InventoryPlayer inventoryPlayer, TileEntityEngineeringTable tileEntityEngineeringTable) {
         tileEntity = tileEntityEngineeringTable;
@@ -151,6 +152,16 @@ public class ContainerEngineeringTable extends Container {
                     itemHandler.insertItem(internalSlot, item.getStackInSlot(stackInSlotZero, internalSlot), false);
                 }
                 upgradeSlotsInitialized = true;
+            } else if (prevItemStack != stackInSlotZero) {
+                for (int i = numBaseSlots; i < prevNumSlots; i++) {
+                    int index = inventorySlots.size() - 1;
+                    inventorySlots.remove(index);
+                    inventoryItemStacks.remove(index);
+                }
+                ((ItemStackHandler) itemHandler).setSize(1);
+                itemHandler.insertItem(0, stackInSlotZero, false);
+                upgradeSlotsInitialized = false;
+                updateUpgradeSlots();
             }
         } else {
             for (int i = numBaseSlots; i < prevNumSlots; i++) {
@@ -163,6 +174,7 @@ public class ContainerEngineeringTable extends Container {
             upgradeSlotsInitialized = false;
         }
         prevNumSlots = inventorySlots.size();
+        prevItemStack = stackInSlotZero;
     }
 
     @Nonnull
