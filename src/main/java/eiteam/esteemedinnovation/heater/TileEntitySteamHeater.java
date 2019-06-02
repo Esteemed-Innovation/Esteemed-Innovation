@@ -1,16 +1,16 @@
 package eiteam.esteemedinnovation.heater;
 
+import eiteam.esteemedinnovation.api.heater.HeatableRegistry;
+import eiteam.esteemedinnovation.api.heater.ISteamable;
 import eiteam.esteemedinnovation.api.steamnet.SteamNetwork;
 import eiteam.esteemedinnovation.commons.util.WorldHelper;
 import eiteam.esteemedinnovation.transport.steam.TileEntitySteamPipe;
-import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -21,8 +21,6 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-import static eiteam.esteemedinnovation.heater.TileEntitySteamFurnace.*;
-
 // FIXME: Shift-clicking in the SteamFurnace GUI with things added by addSteamingRecipe are not put into slot 0.
 public class TileEntitySteamHeater extends TileEntitySteamPipe {
     // When multiple heaters are used on a furnace, there is a single primary heater
@@ -32,34 +30,6 @@ public class TileEntitySteamHeater extends TileEntitySteamPipe {
     public TileEntitySteamHeater() {
         addSidesToGaugeBlacklist(EnumFacing.VALUES);
     }
-
-    public static void replaceWith(TileEntityFurnace current, TileEntityFurnace replacement) {
-        if (current != null) {
-            ItemStack[] furnaceItemStacks = {
-              current.getStackInSlot(0),
-              current.getStackInSlot(1),
-              current.getStackInSlot(2)
-            };
-            int furnaceBurnTime = current.getField(FURNACE_BURN_TIME_ID);
-            int currentItemBurnTime = current.getField(CURRENT_ITEM_BURN_TIME_ID);
-            int furnaceCookTime = current.getField(COOK_TIME_ID);
-            current.getWorld().setTileEntity(current.getPos(), replacement);
-            @SuppressWarnings("TypeMayBeWeakened")
-            TileEntityFurnace replaced = (TileEntityFurnace) current.getWorld().getTileEntity(current.getPos());
-            assert replaced != null;
-            replaced.setInventorySlotContents(0, furnaceItemStacks[0]);
-            replaced.setInventorySlotContents(1, furnaceItemStacks[1]);
-            replaced.setInventorySlotContents(2, furnaceItemStacks[2]);
-            replaced.setField(FURNACE_BURN_TIME_ID, furnaceBurnTime);
-            replaced.setField(CURRENT_ITEM_BURN_TIME_ID, currentItemBurnTime);
-            replaced.setField(COOK_TIME_ID, furnaceCookTime);
-        }
-    }
-
-    public static void replace(TileEntityFurnace furnace) {
-        replaceWith(furnace, new TileEntitySteamFurnace());
-    }
-
 
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
@@ -97,10 +67,6 @@ public class TileEntitySteamHeater extends TileEntitySteamPipe {
             }
             return;
         }
-        if (!(tile instanceof TileEntityFurnace)) {
-            return;
-        }
-        TileEntityFurnace furnace = (TileEntityFurnace) tile;
 
         int numHeaters = 0;
         isPrimaryHeater = false;
@@ -127,34 +93,24 @@ public class TileEntitySteamHeater extends TileEntitySteamPipe {
             }
         }
         if (isPrimaryHeater && numHeaters > 0) {
-            if (!(furnace instanceof TileEntitySteamFurnace) && furnace.getClass() == TileEntityFurnace.class) {
-                replace(furnace);
-            }
+            ISteamable steamable = HeatableRegistry.getSteamable(world, offsetPos);
 
-            if (!(furnace instanceof TileEntitySteamFurnace)) {
+            if (steamable == null) {
                 return;
             }
 
-            int furnaceBurnTime = furnace.getField(FURNACE_BURN_TIME_ID);
-            int furnaceCookTime = furnace.getField(COOK_TIME_ID);
-
-            if ((furnaceBurnTime == 1 || furnaceBurnTime == 0) && getSteamShare() >= CONSUMPTION &&
-              ((TileEntitySteamFurnace) furnace).canSmelt()) {
-                if (furnaceBurnTime == 0) {
-                    BlockFurnace.setState(true, world, offsetPos);
-                }
+            if (getSteamShare() >= CONSUMPTION && steamable.acceptsSteam()) {
+                decrSteam(CONSUMPTION);
+                steamable.steam();
 
                 for (TileEntitySteamHeater heater : secondaryHeaters) {
                     heater.decrSteam(CONSUMPTION);
+                    steamable.steam();
                 }
 
-                furnace.setField(0, furnaceBurnTime + 3);
-
-                if (numHeaters > 1 && furnaceCookTime > 0) {
-                    int newCookTime = Math.min(furnaceCookTime + 2 * numHeaters - 1, 199);
-                    furnace.setField(COOK_TIME_ID, newCookTime);
-                }
                 world.notifyBlockUpdate(offsetPos, world.getBlockState(offsetPos), world.getBlockState(offsetPos), 0);
+            } else {
+                steamable.stopSteam();
             }
         }
     }

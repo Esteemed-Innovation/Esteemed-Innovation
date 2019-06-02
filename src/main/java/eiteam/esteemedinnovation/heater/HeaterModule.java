@@ -3,6 +3,7 @@ package eiteam.esteemedinnovation.heater;
 import crafttweaker.CraftTweakerAPI;
 import eiteam.esteemedinnovation.api.SteamingRegistry;
 import eiteam.esteemedinnovation.api.book.*;
+import eiteam.esteemedinnovation.api.heater.HeatableRegistry;
 import eiteam.esteemedinnovation.commons.CrossMod;
 import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
@@ -14,6 +15,7 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -47,7 +49,6 @@ public class HeaterModule extends ContentModule implements ConfigurableModule {
         STEAM_HEATER = setup(event, new BlockSteamHeater(), "heater");
 
         registerTileEntity(TileEntitySteamHeater.class, "heater");
-        registerTileEntity(TileEntitySteamFurnace.class, "steamFurnace");
     }
 
     @Override
@@ -128,6 +129,11 @@ public class HeaterModule extends ContentModule implements ConfigurableModule {
                   new BookPageItem("research.Heater.name", "research.Heater.0", new ItemStack(STEAM_HEATER)),
                   new BookPageCrafting("", "heater1", "heater2"))));
         }
+
+        MinecraftForge.EVENT_BUS.register(new DisableTileEntityHandler());
+
+        //Vanilla heater handler
+        HeatableRegistry.addHeatable(new VanillaFurnaceHandler());
     }
 
     @SideOnly(Side.CLIENT)
