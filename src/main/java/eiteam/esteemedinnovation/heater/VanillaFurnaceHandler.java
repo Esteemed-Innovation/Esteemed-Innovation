@@ -29,6 +29,7 @@ public class VanillaFurnaceHandler implements HeatableRegistry.IHeatHandler {
         public static final int TOTAL_COOK_TIME_ID = 3;
 
         final TileEntityFurnace furnace;
+        boolean hasStarted = false;
 
         VanillaFurnaceSteamable(TileEntityFurnace furnace) {
             this.furnace = furnace;
@@ -65,8 +66,9 @@ public class VanillaFurnaceHandler implements HeatableRegistry.IHeatHandler {
             final boolean needStart = !isBurning();
             final int topBurnTime = 200;
             final int totalCookTime = furnace.getField(TOTAL_COOK_TIME_ID);
-            if (furnace.getWorld().tickableTileEntities.contains(furnace)) {
+            if (!hasStarted && furnace.getWorld().tickableTileEntities.contains(furnace)) {
                 DisableTileEntityHandler.tileEntitiesToRemove.add(furnace);
+                hasStarted = true;
             }
             if (furnace.getField(FURNACE_BURN_TIME_ID) < topBurnTime) {
                 furnace.setField(FURNACE_BURN_TIME_ID, furnace.getField(FURNACE_BURN_TIME_ID) + 1);
@@ -104,6 +106,7 @@ public class VanillaFurnaceHandler implements HeatableRegistry.IHeatHandler {
             if (!furnace.getWorld().tickableTileEntities.contains(furnace)) {
                 DisableTileEntityHandler.tileEntitiesToAdd.add(furnace);
             }
+            hasStarted = false;
         }
 
         @Override

@@ -14,6 +14,15 @@ public class DisableTileEntityHandler {
     @SubscribeEvent
     public void onWorldTick(TickEvent.WorldTickEvent event) {
         if (event.phase == TickEvent.Phase.START) {
+            for (TileEntity tileEntity : tileEntitiesToAdd) {
+                if (!event.world.isBlockLoaded(tileEntity.getPos())) {
+                    continue;
+                }
+                if (!event.world.tickableTileEntities.contains(tileEntity)) {
+                    event.world.tickableTileEntities.add(tileEntity);
+                }
+            }
+            tileEntitiesToAdd.clear();
             for (TileEntity tileEntity : tileEntitiesToRemove) {
                 if (!event.world.isBlockLoaded(tileEntity.getPos())) {
                     continue;
@@ -21,10 +30,6 @@ public class DisableTileEntityHandler {
                 event.world.tickableTileEntities.remove(tileEntity);
             }
             tileEntitiesToRemove.clear();
-            for (TileEntity tileEntity : tileEntitiesToAdd) {
-                event.world.tickableTileEntities.add(tileEntity);
-            }
-            tileEntitiesToAdd.clear();
         }
     }
 }

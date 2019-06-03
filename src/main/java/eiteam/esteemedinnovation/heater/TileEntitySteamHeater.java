@@ -92,23 +92,26 @@ public class TileEntitySteamHeater extends TileEntitySteamPipe {
                 }
             }
         }
-        if (isPrimaryHeater && numHeaters > 0) {
-            ISteamable steamable = HeatableRegistry.getSteamable(world, offsetPos);
 
-            if (steamable == null) {
-                return;
-            }
+        ISteamable steamable = HeatableRegistry.getSteamable(world, offsetPos);
 
-            if (getSteamShare() >= CONSUMPTION && steamable.acceptsSteam()) {
-                decrSteam(CONSUMPTION);
-                steamable.steam();
+        if (steamable == null) {
+            return;
+        }
 
-                for (TileEntitySteamHeater heater : secondaryHeaters) {
-                    heater.decrSteam(CONSUMPTION);
+        if (isPrimaryHeater) {
+            if (numHeaters > 0) {
+                if (getSteamShare() >= CONSUMPTION && steamable.acceptsSteam()) {
+                    decrSteam(CONSUMPTION);
                     steamable.steam();
-                }
 
-                world.notifyBlockUpdate(offsetPos, world.getBlockState(offsetPos), world.getBlockState(offsetPos), 0);
+                    for (TileEntitySteamHeater heater : secondaryHeaters) {
+                        heater.decrSteam(CONSUMPTION);
+                        steamable.steam();
+                    }
+
+                    world.notifyBlockUpdate(offsetPos, world.getBlockState(offsetPos), world.getBlockState(offsetPos), 0);
+                }
             } else {
                 steamable.stopSteam();
             }
