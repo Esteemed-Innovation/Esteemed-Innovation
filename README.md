@@ -12,7 +12,7 @@ The goal of EI is innovative content that encourages fun play rather than trying
 ## Information and downloads
 * Information can be found on the [FTB Wiki](http://ftb.gamepedia.com/Flaxbeard's_Steam_Power).
 * A changelog can be found also on the [FTB Wiki](http://ftb.gamepedia.com/Flaxbeard's_Steam_Power/Changelog)
-* Downloads can be found on [CurseForge](http://minecraft.curseforge.com/mc-mods/224867-flaxbeards-steam-power/)
+* Downloads can be found on [CurseForge](https://www.curseforge.com/minecraft/mc-mods/flaxbeards-steam-power/)
 * API documentation can be found on [GitHub Pages](http://esteemed-innovation.github.io/Esteemed-Innovation/)
 
 ## Contact
