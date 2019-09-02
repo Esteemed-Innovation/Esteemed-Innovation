@@ -2,7 +2,7 @@ package eiteam.esteemedinnovation.api.heater;
 
 import net.minecraft.tileentity.TileEntityFurnace;
 
-public interface ISteamable {
+public interface Steamable {
     /**
      * Similar to {@link TileEntityFurnace#canSmelt()}, indicates whether the {@link eiteam.esteemedinnovation.heater.TileEntitySteamHeater} should work on the tile at the given moment
      * @return true if steaming logic should happen
@@ -15,7 +15,7 @@ public interface ISteamable {
     void steam();
 
     /**
-     * Called when {@link ISteamable#acceptsSteam} returns false
+     * Called when {@link Steamable#acceptsSteam} returns false
      */
     void stopSteam();
 

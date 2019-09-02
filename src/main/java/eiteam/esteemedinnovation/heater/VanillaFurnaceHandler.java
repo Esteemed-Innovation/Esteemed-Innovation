@@ -2,17 +2,17 @@ package eiteam.esteemedinnovation.heater;
 
 import eiteam.esteemedinnovation.api.SteamingRegistry;
 import eiteam.esteemedinnovation.api.heater.HeatableRegistry;
-import eiteam.esteemedinnovation.api.heater.ISteamable;
+import eiteam.esteemedinnovation.api.heater.Steamable;
 import net.minecraft.block.BlockFurnace;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class VanillaFurnaceHandler implements HeatableRegistry.IHeatHandler {
+public class VanillaFurnaceHandler implements HeatableRegistry.HeatHandler {
 
     @Override
-    public ISteamable apply(World world, BlockPos pos) {
+    public Steamable apply(World world, BlockPos pos) {
         if (world.isBlockLoaded(pos)) {
             if (world.getTileEntity(pos) instanceof TileEntityFurnace) {
                 return new VanillaFurnaceSteamable((TileEntityFurnace) world.getTileEntity(pos));
@@ -21,7 +21,7 @@ public class VanillaFurnaceHandler implements HeatableRegistry.IHeatHandler {
         return null;
     }
 
-    private static class VanillaFurnaceSteamable implements ISteamable {
+    private static class VanillaFurnaceSteamable implements Steamable {
 
         public static final int FURNACE_BURN_TIME_ID = 0;
         public static final int CURRENT_ITEM_BURN_TIME_ID = 1;

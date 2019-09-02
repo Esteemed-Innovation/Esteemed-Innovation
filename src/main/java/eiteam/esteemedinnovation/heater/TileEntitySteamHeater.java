@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.heater;
 
 import eiteam.esteemedinnovation.api.heater.HeatableRegistry;
-import eiteam.esteemedinnovation.api.heater.ISteamable;
+import eiteam.esteemedinnovation.api.heater.Steamable;
 import eiteam.esteemedinnovation.api.steamnet.SteamNetwork;
 import eiteam.esteemedinnovation.commons.util.WorldHelper;
 import eiteam.esteemedinnovation.transport.steam.TileEntitySteamPipe;
@@ -93,7 +93,7 @@ public class TileEntitySteamHeater extends TileEntitySteamPipe {
             }
         }
 
-        ISteamable steamable = HeatableRegistry.getSteamable(world, offsetPos);
+        Steamable steamable = HeatableRegistry.getSteamable(world, offsetPos);
 
         if (steamable == null) {
             return;

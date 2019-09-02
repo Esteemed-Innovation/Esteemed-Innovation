@@ -11,21 +11,21 @@ import java.util.List;
  */
 public class HeatableRegistry {
 
-    private static final List<IHeatHandler> heatables = new ArrayList<>();
+    private static final List<HeatHandler> heatables = new ArrayList<>();
 
-    public static void addHeatable(IHeatHandler heatable) {
+    public static void addHeatable(HeatHandler heatable) {
         heatables.add(heatable);
     }
 
     /**
-     * Used by the {@link eiteam.esteemedinnovation.heater.TileEntitySteamHeater} to get the matching {@link ISteamable} it faces
+     * Used by the {@link eiteam.esteemedinnovation.heater.TileEntitySteamHeater} to get the matching {@link Steamable} it faces
      * @param world The world
      * @param pos The position in the world
-     * @return The {@link ISteamable} at the location given by params
+     * @return The {@link Steamable} at the location given by params
      */
-    public static ISteamable getSteamable(World world, BlockPos pos) {
-        for (IHeatHandler h : heatables) {
-            ISteamable steamable = h.apply(world, pos);
+    public static Steamable getSteamable(World world, BlockPos pos) {
+        for (HeatHandler h : heatables) {
+            Steamable steamable = h.apply(world, pos);
             if(steamable != null) {
                 return steamable;
             }
@@ -33,13 +33,13 @@ public class HeatableRegistry {
         return null;
     }
 
-    public interface IHeatHandler {
+    public interface HeatHandler {
         /**
          * Used to get the ISteamable to handle steaming
          * @param world The world
          * @param pos The position in the world
          * @return The ISteamable matching the {@link net.minecraft.tileentity.TileEntity} or null
          */
-        ISteamable apply(World world, BlockPos pos);
+        Steamable apply(World world, BlockPos pos);
     }
 }
