@@ -86,6 +86,18 @@ public class BlockSteamHeater extends BlockSteamPipe implements Wrenchable {
     }
 
     @Override
+    public void breakBlock(World world, BlockPos pos, IBlockState state) {
+        // Handling the Steamable has to be done *before* the SteamNetwork connection is broken, otherwise we won't be
+        // able to tell if this heater is primary and how many secondary heaters there are (primary is on a network basis).
+        TileEntity tile = world.getTileEntity(pos);
+        if (tile instanceof TileEntitySteamHeater) {
+            ((TileEntitySteamHeater) tile).onBreak(state);
+        }
+
+        super.breakBlock(world, pos, state);
+    }
+
+    @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
         return FULL_BLOCK_AABB;
     }
