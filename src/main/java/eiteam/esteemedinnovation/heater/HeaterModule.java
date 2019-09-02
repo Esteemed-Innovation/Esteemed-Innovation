@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.heater;
 
 import crafttweaker.CraftTweakerAPI;
-import eiteam.esteemedinnovation.api.SteamingRegistry;
+import eiteam.esteemedinnovation.api.heater.SteamingRegistry;
 import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.api.heater.HeatableRegistry;
 import eiteam.esteemedinnovation.commons.CrossMod;

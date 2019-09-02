@@ -3,14 +3,14 @@ package eiteam.esteemedinnovation.api.heater;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * This acts as a registry for custom handlers for the Heater module
  */
-public class HeatableRegistry {
-
+public final class HeatableRegistry {
     private static final List<HeatHandler> heatables = new ArrayList<>();
 
     public static void addHeatable(HeatHandler heatable) {
@@ -18,15 +18,16 @@ public class HeatableRegistry {
     }
 
     /**
-     * Used by the {@link eiteam.esteemedinnovation.heater.TileEntitySteamHeater} to get the matching {@link Steamable} it faces
+     * Used by the steam heater tile entity to get the matching {@link Steamable} it faces
      * @param world The world
      * @param pos The position in the world
      * @return The {@link Steamable} at the location given by params
      */
+    @Nullable
     public static Steamable getSteamable(World world, BlockPos pos) {
         for (HeatHandler h : heatables) {
             Steamable steamable = h.apply(world, pos);
-            if(steamable != null) {
+            if (steamable != null) {
                 return steamable;
             }
         }
@@ -35,10 +36,10 @@ public class HeatableRegistry {
 
     public interface HeatHandler {
         /**
-         * Used to get the ISteamable to handle steaming
+         * Used to get the {@link Steamable} to handle steaming
          * @param world The world
          * @param pos The position in the world
-         * @return The ISteamable matching the {@link net.minecraft.tileentity.TileEntity} or null
+         * @return The {@link Steamable} matching the {@link net.minecraft.tileentity.TileEntity} or null
          */
         Steamable apply(World world, BlockPos pos);
     }

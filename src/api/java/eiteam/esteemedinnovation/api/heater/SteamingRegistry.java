@@ -1,4 +1,4 @@
-package eiteam.esteemedinnovation.api;
+package eiteam.esteemedinnovation.api.heater;
 
 import eiteam.esteemedinnovation.api.util.ItemStackUtility;
 import net.minecraft.item.ItemStack;
@@ -8,13 +8,13 @@ import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SteamingRegistry {
+public final class SteamingRegistry {
     /**
      * All of the custom steaming recipes for the Steam Heater. These recipes will replace existing smelting recipes.
      * <p>
      * Key: input, Value: output
      */
-    private static HashMap<ItemStack, ItemStack> steamingRecipes = new HashMap<>();
+    private static Map<ItemStack, ItemStack> steamingRecipes = new HashMap<>();
 
     /**
      * Adds a steaming custom recipe (not a replacement recipe).

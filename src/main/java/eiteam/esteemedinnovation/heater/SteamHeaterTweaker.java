@@ -5,7 +5,7 @@ import crafttweaker.IAction;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
-import eiteam.esteemedinnovation.api.SteamingRegistry;
+import eiteam.esteemedinnovation.api.heater.SteamingRegistry;
 
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;

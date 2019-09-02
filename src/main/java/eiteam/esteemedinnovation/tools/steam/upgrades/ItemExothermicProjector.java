@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.tools.steam.upgrades;
 
-import eiteam.esteemedinnovation.api.SteamingRegistry;
+import eiteam.esteemedinnovation.api.heater.SteamingRegistry;
 import eiteam.esteemedinnovation.api.tool.SteamTool;
 import eiteam.esteemedinnovation.api.tool.SteamToolSlot;
 import net.minecraft.block.Block;
