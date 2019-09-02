@@ -88,8 +88,8 @@ public class TileEntitySteamHeater extends TileEntitySteamPipe {
         }
 
         if (isPrimary) {
-            // 1 is incremented in conditional and in for loop to factor in the primary heater (this)
-            if (numSecondary + 1 > 0 && getSteamShare() >= CONSUMPTION && steamable.acceptsSteam()) {
+            if (getSteamShare() >= CONSUMPTION && steamable.acceptsSteam()) {
+                // 1 is added to numSecondary in for loop to factor in the primary heater (this)
                 for (int i = 0; i < numSecondary + 1; i++) {
                     decrSteam(CONSUMPTION);
                     steamable.steam();
