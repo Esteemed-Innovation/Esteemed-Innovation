@@ -353,8 +353,7 @@ public class BlockPipe extends BlockSteamTransporter {
             }
             List<IndexedCuboid6> cuboids = new LinkedList();
             ((TileEntitySteamPipe) tile).addTraceableCuboids(cuboids);
-            MovingObjectPosition mop = this.rayTracer.rayTraceCuboids(new Vector3(start), new Vector3(end), cuboids, new BlockCoord(x, y, z), this);
-            return mop;
+           return  this.rayTracer.rayTraceCuboids(new Vector3(start), new Vector3(end), cuboids, new BlockCoord(x, y, z), this);
         }
         
         return null;
