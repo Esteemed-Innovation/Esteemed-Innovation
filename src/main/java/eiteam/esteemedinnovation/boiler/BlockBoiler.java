@@ -70,7 +70,9 @@ public class BlockBoiler extends BlockSteamTransporter implements Wrenchable {
 
     @Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        return getDefaultState().withProperty(FACING, EnumFacing.getDirectionFromEntityLiving(pos, placer));
+        //Because the boiler can't be faced up or down, we simulate the Y value of the boiler to be same as the player's
+        int heightDiff = placer.getPosition().getY() - pos.getY();
+        return getDefaultState().withProperty(FACING, EnumFacing.getDirectionFromEntityLiving(pos.add(0, heightDiff, 0), placer));
     }
 
     @Nonnull
