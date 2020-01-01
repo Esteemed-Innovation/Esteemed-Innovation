@@ -55,7 +55,7 @@ public class RenderUtility {
         }
 
         try {
-            IModel model = ModelLoaderRegistry.getModel(loc);
+            IModel model = ModelLoaderRegistry.getModelOrMissing(loc);
             IBakedModel bakedModel = model.bake(TRSRTransformation.identity(), DefaultVertexFormats.BLOCK,
               ModelLoader.defaultTextureGetter());
             bakedModels.put(loc, bakedModel);
