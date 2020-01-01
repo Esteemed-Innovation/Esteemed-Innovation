@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -81,6 +82,9 @@ public class TileEntityMoldRenderer extends TileEntitySpecialRenderer<TileEntity
     }
 
     private void renderMold(ItemStack item, boolean bottom) {
+        if(item.getItem().equals(Item.getByNameOrId("Air")))
+            return;
+
         bindTexture(((CrucibleMold) item.getItem()).getBlockTexture(item));
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder buffer = tessellator.getBuffer();
