@@ -38,6 +38,9 @@ public class BlockSteamGauge extends Block {
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
+        if(meta == 0) {
+            return getDefaultState().withProperty(FACING, EnumFacing.NORTH);
+        }
         return getDefaultState().withProperty(FACING, EnumFacing.byIndex(meta));
     }
 
