@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
 
 public class TileEntityPumpRenderer extends TileEntitySpecialRenderer<TileEntityPump> implements InventoryTESR {
     private static final ModelPump MODEL = new ModelPump();
-    private static final ResourceLocation TEXTURE = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/models/test.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/models/pump.png");
     private static final float PX = (1.0F / 16.0F);
 
     @Override
