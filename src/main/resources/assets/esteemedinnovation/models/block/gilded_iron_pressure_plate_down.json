@@ -1,0 +1,6 @@
+{
+  "parent": "block/pressure_plate_down",
+  "textures": {
+    "texture": "esteemedinnovation:blocks/block_gilded_iron"
+  }
+}

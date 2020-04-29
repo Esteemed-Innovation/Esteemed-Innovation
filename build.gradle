@@ -1,244 +1,153 @@
-import org.ajoberstar.grgit.Grgit
-
-import java.nio.file.Files
-import java.nio.file.Paths
-import groovy.json.JsonSlurper
-import groovy.json.JsonOutput
-
 buildscript {
     repositories {
-        mavenCentral()
-        maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
-        }
-
-        maven {
-            name = "sonatype"
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
-        }
+        maven { url = 'https://files.minecraftforge.net/maven' }
         jcenter()
+        mavenCentral()
     }
-
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
-        classpath 'org.ajoberstar:grgit:1.1.0'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7'
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
     }
 }
-
-apply plugin: 'net.minecraftforge.gradle.forge'
-apply plugin: 'java'
-apply plugin: 'com.jfrog.bintray'
+apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = newModVersion + '-api' + newAPIVersion
+ext.configFile = file('build.properties')
+ext.config = parseConfig(configFile)
 
-/*
-Usage: `gradle build -Palpha=<version>` where <version> is the next version (different from newModVersion because
-that is updated when we are releasing an actual public update. Modifying that makes reading commit history much more
-confusing). It increments the .alphaversion file's first line at the end, so it can be thought of as "the next alpha version".
-
-Example: `gradle build -Palpha=1.0.0 -Pdev` => version # 1.0.0-alpha1-<commit>
-*/
-static def incrementAlphaVersion(int currentValue) {
-    def file = new File('.alphaversion')
-    file.newWriter()
-    file << "${currentValue + 1}"
-}
-
-def getAlphaVersion() {
-    if (!Files.exists(Paths.get('.alphaversion'))) {
-        new File('.alphaversion').createNewFile()
-        incrementAlphaVersion(0)
-    }
-    new File('.alphaversion').withReader { return it.readLine() }
-}
-
-int alpha = getAlphaVersion().toInteger()
-
-if (project.hasProperty('alpha')) {
-    version = project.property('alpha') + "-alpha" + alpha
-}
-
-if (project.hasProperty('dev')) {
-    def git = Grgit.open(dir: '.')
-    project.version += '-' + git.head().getAbbreviatedId(6)
-}
-
-task finalize << {
-    if (project.hasProperty('alpha')) {
-        incrementAlphaVersion(alpha)
-    }
-
-    // This file is genereated by processResources before getting put into the jar.
-    new File('./mcmod.info').delete()
-}
-
-build.finalizedBy(finalize)
-
+version = "${config.major_version}.${config.minor_version}"
 group = "eiteam.esteemedinnovation"
-archivesBaseName = "EsteemedInnovation-1.12"
+archivesBaseName = 'EsteemedInnovation-1.15.2'
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+if (System.getenv('BUILD_NUMBER') != null) {
+    version += "." + System.getenv('BUILD_NUMBER');
+}
+
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
 minecraft {
-    version = project.forgeVersion
-    mappings = project.mcpMappings
-    runDir = "eclipse"
-    replace "@VERSION@", newModVersion
-    replace "@APIVERSION@", newAPIVersion
-}
+    mappings channel: "${config.mapping_channel}", version: "${config.mapping_version}"
+    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 
-repositories {
-    maven {
-        name = "ic2"
-        url = "http://maven.ic2.player.to/"
-    }
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
-    // Used for Mantle, Natura, Tinkers' Construct, and JEI.
-    maven {
-        name "progwml6"
-        url "http://dvs1.progwml6.com/files/maven"
-    }
-
-    maven {
-        name "tterrag Repo"
-        url "http://maven.tterrag.com"
-    }
-
-    maven {
-        name = "The CB Project"
-        url "http://chickenbones.net/maven"
-    }
-
-    maven {
-        url "http://tehnut.info/maven"
-    }
-
-    // url of the maven that hosts Enchiridions files
-    maven {
-        url "http://girafi.dk/maven/"
-    }
-
-    maven {
-        name = "Jared"
-        url = "http://maven.blamejared.com/"
-    }
-
-    maven {
-        url = "https://minecraft.curseforge.com/api/maven/"
-    }
-}
-
-dependencies {
-    compile mantleVersion
-    compile ticVersion
-    compile naturaVersion
-    // compile ic2Version
-    compile jeiVersion
-    deobfCompile cclibVersion
-    compile wailaVersion
-    deobfCompile enchiridionVersion
-    compile craftTweaker2APIVersion
-    compile craftTweaker2Version
-    compile baublesVersion
-//    These are dependent on libs which do not compile successfully.
-//    compile eioVersion
-//    compile ecoreVersion
-
-    // Avoiding using the generic "lib".
-    compile fileTree(dir: 'eilib', include: '*.jar')
-
-    testCompile sourceSets.api.getOutput()
-    testCompile 'junit:junit:4.12'
-}
-
-processResources {
-    // Combine the main and api mcmod.info files and replace their versions.
-    def slurper = new JsonSlurper()
-
-    def mainInfo = new File('src/main/resources/mcmod.info').text
-    def apiInfo = new File('src/api/resources/mcmod.info').text
-
-    def mainJson = slurper.parseText(mainInfo)
-    def apiJson = slurper.parseText(apiInfo)
-
-    mainJson[0].version = newModVersion
-    apiJson[0].version = newAPIVersion
-
-    def outputInfo = [
-            mainJson[0],
-            apiJson[0]
-    ]
-
-    new File('./mcmod.info').write(JsonOutput.toJson(outputInfo))
-
-    from 'mcmod.info'
-
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
-    }
-
-    from(sourceSets.api.resources.srcDirs) {
-        exclude 'mcmod.info'
-    }
-}
-
-// TODO: Automate for when a new API package is built/published.
-javadoc {
-    source = sourceSets.api.allJava
-    destinationDir = file('./docs/')
-    options.memberLevel = JavadocMemberLevel.PRIVATE
-    title = 'Esteemed Innovation API version ' + newAPIVersion
-}
-
-task apiJar(type: Jar) {
-    version = newAPIVersion
-    classifier = 'api'
-    from sourceSets.api.output
-    from(sourceSets.api.resources.srcDirs) {
-        include 'mcmod.info'
-        filter {
-            it.replaceAll('@APIVERSION@', newAPIVersion)
+    runs {
+        client {
+            workingDirectory project.file('run')
+            mods {
+                esteemedinnovation {
+                    source sourceSets.main
+                }
+            }
         }
-    }
 
-    from(sourceSets.api.resources) {
-        exclude 'mcmod.info'
-    }
-}
-
-jar {
-    dependsOn compileApiJava
-    from sourceSets.api.output.classesDir
-}
-
-artifacts {
-    archives apiJar
-}
-
-publishing {
-    publications {
-        apiPublication(MavenPublication) {
-            artifact apiJar
+        server {
+            workingDirectory project.file('run')
+            mods {
+                esteemedinnovation {
+                    source sourceSets.main
+                }
+            }
         }
-    }
-}
 
-bintray {
-    if (System.hasProperty('bintray_user') && System.hasProperty('bintray_key')) {
-        user = bintray_user
-        key = bintray_key
-        publications = ['apiPublication'] 
-        pkg {
-            repo = 'Esteemed-Innovation'
-            name = 'Releases'
-            userOrg = 'esteemed-innovation'
-            version {
-                name = project.version
+        data {
+            workingDirectory project.file('run')
+            args '--mod', 'esteemedinnovation', '--all', '--output', file('src/generated/resources/')
+            mods {
+                esteemedinnovation {
+                    source sourceSets.main
+                }
             }
         }
     }
 }
+
+repositories {
+  maven {
+    name = "CraftTweaker Maven"
+    url = "http://maven.blamejared.com"
+  }
+  maven {
+    name = "Progwml6 maven"
+    url = "https://dvs1.progwml6.com/files/maven/"
+  }
+}
+
+dependencies {
+    minecraft "net.minecraftforge:forge:${config.mc_version}-${config.forge_version}"
+}
+
+def parseConfig(File config) {
+    config.withReader {
+        def prop = new Properties()
+        prop.load(it)
+        return (new ConfigSlurper().parse(prop))
+    }
+}
+
+jar {
+    manifest {
+        attributes([
+            "Specification-Title": "esteemedinnovation",
+            "Specification-Vendor": "eiteam",
+            "Specification-Version": "1",
+            "Implementation-Title": project.name,
+            "Implementation-Version": "${version}",
+            "Implementation-Vendor" :"eiteam",
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+}
+// Example configuration to allow publishing using the maven-publish task
+// This is the preferred method to reobfuscate your jar file
+jar.finalizedBy('reobfJar')
+// However if you are in a multi-project build, dev time needs unobfed jar files, so you can delay the obfuscation until publishing by doing
+//publish.dependsOn('reobfJar')
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    description = 'Creates a JAR containing the JavaDocs.'
+    from javadoc.destinationDir
+    classifier = 'javadoc'
+}
+
+task deobfJar(type: Jar) {
+    description = 'Creates a JAR containing the non-obfuscated compiled code.'
+    from sourceSets.main.output
+    classifier = "deobf"
+}
+
+artifacts {
+    archives javadocJar
+    archives deobfJar
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId project.group
+            artifactId project.archivesBaseName
+            version project.version
+            from components.java
+            // Allows the maven pom file to be modified.
+            pom.withXml {
+                // Go through all the dependencies.
+                asNode().dependencies.dependency.each { dep ->
+                    println 'Surpressing artifact ' + dep.artifactId.last().value().last() + ' from maven dependencies.'
+                    assert dep.parent().remove(dep)
+                }
+            }
+            artifact javadocJar {
+                classifier 'javadoc'
+            }
+            artifact deobfJar {
+                classifier 'deobf'
+            }
+        }
+    }
+    repositories {
+        maven {
+            url "file://" + System.getenv("local_maven")
+        }
+    }
+}
+
