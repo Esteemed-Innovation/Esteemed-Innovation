@@ -18,10 +18,12 @@ import org.apache.logging.log4j.Logger;
 public class EsteemedInnovation {
     public static final String MODID = "esteemedinnovation";
     public static final Logger LOGGER = LogManager.getLogger("EsteemedInnovation");
+    public static EsteemedInnovation instance;
     
     public final ModuleManager moduleManager;
     
     public EsteemedInnovation() {
+        instance = this;
         moduleManager = new ModuleManager();
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupClient);

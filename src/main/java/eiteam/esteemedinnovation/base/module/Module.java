@@ -1,11 +1,14 @@
 package eiteam.esteemedinnovation.base.module;
 
 import eiteam.esteemedinnovation.base.EsteemedInnovation;
-import net.minecraft.block.Block;
+import net.minecraft.data.DataGenerator;
+import net.minecraft.data.IDataProvider;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.generators.ExistingFileHelper;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
@@ -45,5 +48,10 @@ public class Module {
 	
 	public Item.Properties unstackableItemProp() {
 		return defaultItemProp().maxStackSize(1);
+	}
+	
+	
+	public IDataProvider[] getDataProviders(DataGenerator generator, ExistingFileHelper existingFileHelper) {
+		return new IDataProvider[0];
 	}
 }

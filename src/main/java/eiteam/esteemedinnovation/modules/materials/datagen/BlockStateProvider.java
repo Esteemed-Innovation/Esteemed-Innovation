@@ -1,23 +1,19 @@
-package eiteam.esteemedinnovation.base.datagen;
+package eiteam.esteemedinnovation.modules.materials.datagen;
 
 import eiteam.esteemedinnovation.base.EsteemedInnovation;
-import eiteam.esteemedinnovation.base.ModNames;
 import eiteam.esteemedinnovation.modules.materials.ClassSensitivePlateBlock;
-import net.minecraft.block.AbstractPressurePlateBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.WeightedPressurePlateBlock;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ExistingFileHelper;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
-import java.util.Map;
 
-import static eiteam.esteemedinnovation.base.ModNames.*;
+import static eiteam.esteemedinnovation.base.ModNames.GILDED_IRON;
+import static eiteam.esteemedinnovation.base.ModNames.Suffix;
 
 public class BlockStateProvider extends net.minecraftforge.client.model.generators.BlockStateProvider {
 	
@@ -54,6 +50,6 @@ public class BlockStateProvider extends net.minecraftforge.client.model.generato
 	@Nonnull
 	@Override
 	public String getName() {
-		return "EsteemedInnovation blockstate provider";
+		return "EsteemedInnovation Materials BlockState Provider";
 	}
 }

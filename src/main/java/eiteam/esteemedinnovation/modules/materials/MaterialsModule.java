@@ -1,14 +1,19 @@
 package eiteam.esteemedinnovation.modules.materials;
 
 import eiteam.esteemedinnovation.base.module.Module;
+import eiteam.esteemedinnovation.modules.materials.datagen.BlockStateProvider;
+import eiteam.esteemedinnovation.modules.materials.datagen.ItemModelProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.WeightedPressurePlateBlock;
 import net.minecraft.block.material.Material;
+import net.minecraft.data.DataGenerator;
+import net.minecraft.data.IDataProvider;
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraftforge.client.model.generators.ExistingFileHelper;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -103,5 +108,13 @@ public class MaterialsModule extends Module {
 		for (MetalTypes metal : MetalTypes.getRawTypes()) {
 			register(r, new Block(props), metal.getName() + Suffix.ORE);
 		}
+	}
+	
+	@Override
+	public IDataProvider[] getDataProviders(DataGenerator generator, ExistingFileHelper existingFileHelper) {
+		return new IDataProvider[]{
+		  new BlockStateProvider(generator, existingFileHelper),
+		  new ItemModelProvider(generator, existingFileHelper)
+		};
 	}
 }

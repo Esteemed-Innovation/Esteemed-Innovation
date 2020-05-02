@@ -1,7 +1,6 @@
-package eiteam.esteemedinnovation.base.datagen;
+package eiteam.esteemedinnovation.modules.materials.datagen;
 
 import eiteam.esteemedinnovation.base.EsteemedInnovation;
-import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -34,6 +33,6 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
 	
 	@Override
 	public String getName() {
-		return "EsteemedInnovation item models";
+		return "EsteemedInnovation Materials Item Model Provider";
 	}
 }
