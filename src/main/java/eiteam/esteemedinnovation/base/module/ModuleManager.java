@@ -13,6 +13,14 @@ public class ModuleManager {
 		modules = new HashMap<>();
 	}
 	
+	public Map<String, Module> getModules() {
+		return modules;
+	}
+	
+	public Module getModule(String name) {
+		return modules.get(name);
+	}
+	
 	public void registerModule(Module module) {
 		modules.put(module.getName(), module);
 	}

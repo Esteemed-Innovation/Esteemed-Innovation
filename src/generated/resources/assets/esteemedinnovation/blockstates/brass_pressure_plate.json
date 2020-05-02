@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "powered=false": {
+      "model": "esteemedinnovation:block/brass_pressure_plate_down"
+    },
+    "powered=true": {
+      "model": "esteemedinnovation:block/brass_pressure_plate"
+    }
+  }
+}

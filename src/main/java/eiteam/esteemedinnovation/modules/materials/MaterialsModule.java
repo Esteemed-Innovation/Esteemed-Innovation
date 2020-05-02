@@ -1,6 +1,5 @@
 package eiteam.esteemedinnovation.modules.materials;
 
-import eiteam.esteemedinnovation.base.EsteemedInnovation;
 import eiteam.esteemedinnovation.base.module.Module;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -10,51 +9,99 @@ import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraftforge.fml.RegistryObject;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.common.ToolType;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.ObjectHolder;
 
 import static eiteam.esteemedinnovation.base.EsteemedInnovation.MODID;
+import static eiteam.esteemedinnovation.base.ModNames.*;
 
+@ObjectHolder(MODID)
 public class MaterialsModule extends Module {
 	
-	DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, MODID);
-	DeferredRegister<Item> ITEMS = new DeferredRegister<>(ForgeRegistries.ITEMS, MODID);
+	@ObjectHolder(COPPER + Suffix.INGOT) public static Item copperIngot;
+	@ObjectHolder(ZINC + Suffix.INGOT) public static Item zincIngot;
+	@ObjectHolder(BRASS + Suffix.INGOT) public static Item brassIngot;
+	@ObjectHolder(GILDED_IRON + Suffix.INGOT) public static Item gildedIronIngot;
 	
-	public RegistryObject<Item> COPPER_INGOT = ITEMS.register("copper_ingot", () -> new Item(new Item.Properties().group(EsteemedInnovation.ITEM_GROUP)));
-	public RegistryObject<Item> ZINC_INGOT = ITEMS.register("zinc_ingot", () -> new Item(new Item.Properties().group(EsteemedInnovation.ITEM_GROUP)));
-	public RegistryObject<Item> BRASS_INGOT = ITEMS.register("brass_ingot", () -> new Item(new Item.Properties().group(EsteemedInnovation.ITEM_GROUP)));
-	public RegistryObject<Item> GILDED_IRON_INGOT = ITEMS.register("gilded_iron_ingot", () -> new Item(new Item.Properties().group(EsteemedInnovation.ITEM_GROUP)));
+	@ObjectHolder(COPPER + Suffix.NUGGET) public static Item copperNugget;
+	@ObjectHolder(ZINC + Suffix.NUGGET) public static Item zincNugget;
+	@ObjectHolder(BRASS + Suffix.NUGGET) public static Item brassNugget;
+	@ObjectHolder(GILDED_IRON + Suffix.NUGGET) public static Item gildedIronNugget;
 	
-	public RegistryObject<Item> COPPER_NUGGET = ITEMS.register("copper_nugget", () -> new Item(new Item.Properties().group(EsteemedInnovation.ITEM_GROUP)));
-	public RegistryObject<Item> ZINC_NUGGET = ITEMS.register("zinc_nugget", () -> new Item(new Item.Properties().group(EsteemedInnovation.ITEM_GROUP)));
-	public RegistryObject<Item> BRASS_NUGGET = ITEMS.register("brass_nugget", () -> new Item(new Item.Properties().group(EsteemedInnovation.ITEM_GROUP)));
-	public RegistryObject<Item> GILDED_IRON_NUGGET = ITEMS.register("gilded_iron_nugget", () -> new Item(new Item.Properties().group(EsteemedInnovation.ITEM_GROUP)));
+	@ObjectHolder(COPPER + Suffix.BLOCK) public static Block copperBlock;
+	@ObjectHolder(ZINC + Suffix.BLOCK) public static Block zincBlock;
+	@ObjectHolder(BRASS + Suffix.BLOCK) public static Block brassBlock;
+	@ObjectHolder(GILDED_IRON + Suffix.BLOCK) public static Block gildedIronBlock;
 	
-	public RegistryObject<Block> COPPER_BLOCK = BLOCKS.register("copper_block", () -> new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 6).sound(SoundType.METAL)));
-	public RegistryObject<Block> ZINC_BLOCK = BLOCKS.register("zinc_block", () -> new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 6).sound(SoundType.METAL)));
-	public RegistryObject<Block> BRASS_BLOCK = BLOCKS.register("brass_block", () -> new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 6).sound(SoundType.METAL)));
-	public RegistryObject<Block> GILDED_IRON_BLOCK = BLOCKS.register("gilded_iron_block", () -> new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 6).sound(SoundType.METAL)));
+	@ObjectHolder(COPPER + Suffix.BLOCK) public static Item copperBlockItem;
+	@ObjectHolder(ZINC + Suffix.BLOCK) public static Item zincBlockItem;
+	@ObjectHolder(BRASS + Suffix.BLOCK) public static Item brassBlockItem;
+	@ObjectHolder(GILDED_IRON + Suffix.BLOCK) public static Item gildedIronBlockItem;
 	
-	public RegistryObject<Item> COPPER_BLOCK_ITEM = ITEMS.register("copper_block", () -> new BlockItem(COPPER_BLOCK.get(), new Item.Properties().group(EsteemedInnovation.ITEM_GROUP)));
-	public RegistryObject<Item> ZINC_BLOCK_ITEM = ITEMS.register("zinc_block", () -> new BlockItem(ZINC_BLOCK.get(), new Item.Properties().group(EsteemedInnovation.ITEM_GROUP)));
-	public RegistryObject<Item> BRASS_BLOCK_ITEM = ITEMS.register("brass_block", () -> new BlockItem(BRASS_BLOCK.get(), new Item.Properties().group(EsteemedInnovation.ITEM_GROUP)));
-	public RegistryObject<Item> GILDED_IRON_BLOCK_ITEM = ITEMS.register("gilded_iron_block", () -> new BlockItem(GILDED_IRON_BLOCK.get(), new Item.Properties().group(EsteemedInnovation.ITEM_GROUP)));
+	@ObjectHolder(COPPER + Suffix.PRESSURE_PLATE) public static Block copperPressurePlate;
+	@ObjectHolder(ZINC + Suffix.PRESSURE_PLATE) public static Block zincPressurePlate;
+	@ObjectHolder(BRASS + Suffix.PRESSURE_PLATE) public static Block brassPressurePlate;
+	@ObjectHolder(GILDED_IRON + Suffix.PRESSURE_PLATE) public static Block gildedIronPressurePlate;
 	
-	public RegistryObject<Block> COPPER_PRESSURE_PLATE = BLOCKS.register("copper_pressure_plate", () -> new ClassSensitivePlateBlock<>(Block.Properties.create(Material.IRON).doesNotBlockMovement().hardnessAndResistance(0.5F).sound(SoundType.WOOD), MobEntity.class));
-	public RegistryObject<Block> ZINC_PRESSURE_PLATE = BLOCKS.register("zinc_pressure_plate", () -> new ClassSensitivePlateBlock<>(Block.Properties.create(Material.IRON).doesNotBlockMovement().hardnessAndResistance(0.5F).sound(SoundType.WOOD), AgeableEntity.class, AgeableEntity::isChild));
-	public RegistryObject<Block> BRASS_PRESSURE_PLATE = BLOCKS.register("brass_pressure_plate", () -> new ClassSensitivePlateBlock<>(Block.Properties.create(Material.IRON).doesNotBlockMovement().hardnessAndResistance(0.5F).sound(SoundType.WOOD), AgeableEntity.class, e -> !e.isChild()));
-	public RegistryObject<Block> GILDED_IRON_PRESSURE_PLATE = BLOCKS.register("gilded_iron_pressure_plate", () -> new WeightedPressurePlateBlock(150, Block.Properties.create(Material.IRON).doesNotBlockMovement().hardnessAndResistance(0.5F).sound(SoundType.WOOD)));
+	@ObjectHolder(COPPER + Suffix.PRESSURE_PLATE) public static Item copperPressurePlateItem;
+	@ObjectHolder(ZINC + Suffix.PRESSURE_PLATE) public static Item zincPressurePlateItem;
+	@ObjectHolder(BRASS + Suffix.PRESSURE_PLATE) public static Item brassPressurePlateItem;
+	@ObjectHolder(GILDED_IRON + Suffix.PRESSURE_PLATE) public static Item gildedIronPressurePlateItem;
 	
-	public RegistryObject<Item> COPPER_PRESSURE_PLATE_ITEM = ITEMS.register("copper_pressure_plate", () -> new BlockItem(COPPER_PRESSURE_PLATE.get(), new Item.Properties().group(EsteemedInnovation.ITEM_GROUP)));
-	public RegistryObject<Item> ZINC_PRESSURE_PLATE_ITEM = ITEMS.register("zinc_pressure_plate", () -> new BlockItem(ZINC_PRESSURE_PLATE.get(), new Item.Properties().group(EsteemedInnovation.ITEM_GROUP)));
-	public RegistryObject<Item> BRASS_PRESSURE_PLATE_ITEM = ITEMS.register("brass_pressure_plate", () -> new BlockItem(BRASS_PRESSURE_PLATE.get(), new Item.Properties().group(EsteemedInnovation.ITEM_GROUP)));
-	public RegistryObject<Item> GILDED_IRON_PRESSURE_PLATE_ITEM = ITEMS.register("gilded_iron_pressure_plate", () -> new BlockItem(GILDED_IRON_PRESSURE_PLATE.get(), new Item.Properties().group(EsteemedInnovation.ITEM_GROUP)));
+	@ObjectHolder(COPPER + Suffix.ORE) public static Block copperOre;
+	@ObjectHolder(ZINC + Suffix.ORE) public static Block zincOre;
+	
+	@ObjectHolder(COPPER + Suffix.ORE) public static Item copperOreItem;
+	@ObjectHolder(ZINC + Suffix.ORE) public static Item zincOreItem;
 	
 	public MaterialsModule() {
 		super("materials");
-		BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
-		ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
+	}
+	
+	@SubscribeEvent
+	public void registerItems(RegistryEvent.Register<Item> event) {
+		IForgeRegistry<Item> r = event.getRegistry();
+		
+		Item.Properties props = defaultItemProp();
+		for (MetalTypes metal : MetalTypes.values()) {
+			register(r, new Item(props), metal.getName() + Suffix.INGOT);
+			register(r, new Item(props), metal.getName() + Suffix.NUGGET);
+		}
+		register(r, new BlockItem(copperBlock, props), copperBlock.getRegistryName());
+		register(r, new BlockItem(zincBlock, props), zincBlock.getRegistryName());
+		register(r, new BlockItem(brassBlock, props), brassBlock.getRegistryName());
+		register(r, new BlockItem(gildedIronBlock, props), gildedIronBlock.getRegistryName());
+		
+		register(r, new BlockItem(copperPressurePlate, props), copperPressurePlate.getRegistryName());
+		register(r, new BlockItem(zincPressurePlate, props), zincPressurePlate.getRegistryName());
+		register(r, new BlockItem(brassPressurePlate, props), brassPressurePlate.getRegistryName());
+		register(r, new BlockItem(gildedIronPressurePlate, props), gildedIronPressurePlate.getRegistryName());
+		
+		register(r, new BlockItem(copperOre, props), copperOre.getRegistryName());
+		register(r, new BlockItem(zincOre, props), zincOre.getRegistryName());
+	}
+	
+	@SubscribeEvent
+	public void registerBlocks(RegistryEvent.Register<Block> event) {
+		IForgeRegistry<Block> r = event.getRegistry();
+		
+		Block.Properties props = Block.Properties.create(Material.IRON).hardnessAndResistance(5, 6).sound(SoundType.METAL);
+		for (MetalTypes metal : MetalTypes.values()) {
+			register(r, new Block(props), metal.getName() + Suffix.BLOCK);
+		}
+		
+		props = Block.Properties.create(Material.IRON).doesNotBlockMovement().hardnessAndResistance(0.5F).sound(SoundType.WOOD);
+		register(r, new ClassSensitivePlateBlock<>(props, MobEntity.class), COPPER + Suffix.PRESSURE_PLATE);
+		register(r, new ClassSensitivePlateBlock<>(props, AgeableEntity.class, AgeableEntity::isChild), ZINC + Suffix.PRESSURE_PLATE);
+		register(r, new ClassSensitivePlateBlock<>(props, AgeableEntity.class, e -> !e.isChild()), BRASS + Suffix.PRESSURE_PLATE);
+		register(r, new WeightedPressurePlateBlock(150, props), GILDED_IRON + Suffix.PRESSURE_PLATE);
+		
+		props = Block.Properties.create(Material.ROCK).hardnessAndResistance(3, 5).harvestTool(ToolType.PICKAXE).harvestLevel(1).sound(SoundType.STONE);
+		for (MetalTypes metal : MetalTypes.getRawTypes()) {
+			register(r, new Block(props), metal.getName() + Suffix.ORE);
+		}
 	}
 }

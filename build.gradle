@@ -52,7 +52,7 @@ minecraft {
 
         data {
             workingDirectory project.file('run')
-            args '--mod', 'esteemedinnovation', '--all', '--output', file('src/generated/resources/')
+            args '--mod', 'esteemedinnovation', '--all', '--output', file('src/generated/resources/'), '--existing', sourceSets.main.resources.srcDirs[0]
             mods {
                 esteemedinnovation {
                     source sourceSets.main
