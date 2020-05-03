@@ -13,10 +13,18 @@ import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.GenerationStage;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.OreFeatureConfig;
+import net.minecraft.world.gen.placement.CountRangeConfig;
+import net.minecraft.world.gen.placement.Placement;
 import net.minecraftforge.client.model.generators.ExistingFileHelper;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.ObjectHolder;
 
@@ -26,44 +34,94 @@ import static eiteam.esteemedinnovation.base.ModNames.*;
 @ObjectHolder(MODID)
 public class MaterialsModule extends Module {
 	
-	@ObjectHolder(COPPER + Suffix.INGOT) public static Item copperIngot;
-	@ObjectHolder(ZINC + Suffix.INGOT) public static Item zincIngot;
-	@ObjectHolder(BRASS + Suffix.INGOT) public static Item brassIngot;
-	@ObjectHolder(GILDED_IRON + Suffix.INGOT) public static Item gildedIronIngot;
+	@ObjectHolder(COPPER + Suffix.INGOT)
+	public static Item copperIngot;
+	@ObjectHolder(ZINC + Suffix.INGOT)
+	public static Item zincIngot;
+	@ObjectHolder(BRASS + Suffix.INGOT)
+	public static Item brassIngot;
+	@ObjectHolder(GILDED_IRON + Suffix.INGOT)
+	public static Item gildedIronIngot;
 	
-	@ObjectHolder(COPPER + Suffix.NUGGET) public static Item copperNugget;
-	@ObjectHolder(ZINC + Suffix.NUGGET) public static Item zincNugget;
-	@ObjectHolder(BRASS + Suffix.NUGGET) public static Item brassNugget;
-	@ObjectHolder(GILDED_IRON + Suffix.NUGGET) public static Item gildedIronNugget;
+	@ObjectHolder(COPPER + Suffix.NUGGET)
+	public static Item copperNugget;
+	@ObjectHolder(ZINC + Suffix.NUGGET)
+	public static Item zincNugget;
+	@ObjectHolder(BRASS + Suffix.NUGGET)
+	public static Item brassNugget;
+	@ObjectHolder(GILDED_IRON + Suffix.NUGGET)
+	public static Item gildedIronNugget;
 	
-	@ObjectHolder(COPPER + Suffix.BLOCK) public static Block copperBlock;
-	@ObjectHolder(ZINC + Suffix.BLOCK) public static Block zincBlock;
-	@ObjectHolder(BRASS + Suffix.BLOCK) public static Block brassBlock;
-	@ObjectHolder(GILDED_IRON + Suffix.BLOCK) public static Block gildedIronBlock;
+	@ObjectHolder(COPPER + Suffix.BLOCK)
+	public static Block copperBlock;
+	@ObjectHolder(ZINC + Suffix.BLOCK)
+	public static Block zincBlock;
+	@ObjectHolder(BRASS + Suffix.BLOCK)
+	public static Block brassBlock;
+	@ObjectHolder(GILDED_IRON + Suffix.BLOCK)
+	public static Block gildedIronBlock;
 	
-	@ObjectHolder(COPPER + Suffix.BLOCK) public static Item copperBlockItem;
-	@ObjectHolder(ZINC + Suffix.BLOCK) public static Item zincBlockItem;
-	@ObjectHolder(BRASS + Suffix.BLOCK) public static Item brassBlockItem;
-	@ObjectHolder(GILDED_IRON + Suffix.BLOCK) public static Item gildedIronBlockItem;
+	@ObjectHolder(COPPER + Suffix.BLOCK)
+	public static Item copperBlockItem;
+	@ObjectHolder(ZINC + Suffix.BLOCK)
+	public static Item zincBlockItem;
+	@ObjectHolder(BRASS + Suffix.BLOCK)
+	public static Item brassBlockItem;
+	@ObjectHolder(GILDED_IRON + Suffix.BLOCK)
+	public static Item gildedIronBlockItem;
 	
-	@ObjectHolder(COPPER + Suffix.PRESSURE_PLATE) public static Block copperPressurePlate;
-	@ObjectHolder(ZINC + Suffix.PRESSURE_PLATE) public static Block zincPressurePlate;
-	@ObjectHolder(BRASS + Suffix.PRESSURE_PLATE) public static Block brassPressurePlate;
-	@ObjectHolder(GILDED_IRON + Suffix.PRESSURE_PLATE) public static Block gildedIronPressurePlate;
+	@ObjectHolder(COPPER + Suffix.PRESSURE_PLATE)
+	public static Block copperPressurePlate;
+	@ObjectHolder(ZINC + Suffix.PRESSURE_PLATE)
+	public static Block zincPressurePlate;
+	@ObjectHolder(BRASS + Suffix.PRESSURE_PLATE)
+	public static Block brassPressurePlate;
+	@ObjectHolder(GILDED_IRON + Suffix.PRESSURE_PLATE)
+	public static Block gildedIronPressurePlate;
 	
-	@ObjectHolder(COPPER + Suffix.PRESSURE_PLATE) public static Item copperPressurePlateItem;
-	@ObjectHolder(ZINC + Suffix.PRESSURE_PLATE) public static Item zincPressurePlateItem;
-	@ObjectHolder(BRASS + Suffix.PRESSURE_PLATE) public static Item brassPressurePlateItem;
-	@ObjectHolder(GILDED_IRON + Suffix.PRESSURE_PLATE) public static Item gildedIronPressurePlateItem;
+	@ObjectHolder(COPPER + Suffix.PRESSURE_PLATE)
+	public static Item copperPressurePlateItem;
+	@ObjectHolder(ZINC + Suffix.PRESSURE_PLATE)
+	public static Item zincPressurePlateItem;
+	@ObjectHolder(BRASS + Suffix.PRESSURE_PLATE)
+	public static Item brassPressurePlateItem;
+	@ObjectHolder(GILDED_IRON + Suffix.PRESSURE_PLATE)
+	public static Item gildedIronPressurePlateItem;
 	
-	@ObjectHolder(COPPER + Suffix.ORE) public static Block copperOre;
-	@ObjectHolder(ZINC + Suffix.ORE) public static Block zincOre;
+	@ObjectHolder(COPPER + Suffix.ORE)
+	public static Block copperOre;
+	@ObjectHolder(ZINC + Suffix.ORE)
+	public static Block zincOre;
 	
-	@ObjectHolder(COPPER + Suffix.ORE) public static Item copperOreItem;
-	@ObjectHolder(ZINC + Suffix.ORE) public static Item zincOreItem;
+	@ObjectHolder(COPPER + Suffix.ORE)
+	public static Item copperOreItem;
+	@ObjectHolder(ZINC + Suffix.ORE)
+	public static Item zincOreItem;
 	
 	public MaterialsModule() {
 		super("materials");
+	}
+	
+	@Override
+	public void setup(FMLCommonSetupEvent event) {
+		for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
+			if (biome.getCategory() != Biome.Category.THEEND && biome.getCategory() != Biome.Category.NETHER) {
+				biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES,
+				  Feature.ORE.withConfiguration(
+					new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE,
+					  copperOre.getDefaultState(), 4)
+				  ).withPlacement(Placement.COUNT_RANGE.configure(
+					new CountRangeConfig(10, 40, 0, 128)
+				  )));
+				biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES,
+				  Feature.ORE.withConfiguration(
+					new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE,
+					  zincOre.getDefaultState(), 4)
+				  ).withPlacement(Placement.COUNT_RANGE.configure(
+					new CountRangeConfig(10, 40, 0, 128)
+				  )));
+			}
+		}
 	}
 	
 	@SubscribeEvent
