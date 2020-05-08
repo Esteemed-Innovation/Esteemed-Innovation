@@ -16,6 +16,7 @@ import org.apache.logging.log4j.Logger;
 
 @Mod("esteemedinnovation")
 public class EsteemedInnovation {
+    
     public static final String MODID = "esteemedinnovation";
     public static final Logger LOGGER = LogManager.getLogger("EsteemedInnovation");
     public static EsteemedInnovation instance;
@@ -37,7 +38,7 @@ public class EsteemedInnovation {
     
     private void registerModuleEvents() {
         for (Module module : moduleManager.getModules().values()) {
-            if(module.hasEvents) {
+            if (module.hasEvents) {
                 FMLJavaModLoadingContext.get().getModEventBus().register(module);
             }
         }
