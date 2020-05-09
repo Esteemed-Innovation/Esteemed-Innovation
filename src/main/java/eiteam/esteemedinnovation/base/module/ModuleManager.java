@@ -1,6 +1,7 @@
 package eiteam.esteemedinnovation.base.module;
 
 import eiteam.esteemedinnovation.base.EsteemedInnovation;
+import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
@@ -26,6 +27,20 @@ public class ModuleManager {
     public void registerModule(Module module) {
         modules.put(module.getName(), module);
         EsteemedInnovation.LOGGER.debug("Registered Module: " + module.getName());
+    }
+    
+    public void setupConfig(final ForgeConfigSpec.Builder builder) {
+        modules.forEach((name, module) -> {
+            if (module.hasConfigs()) {
+                builder.push(name);
+                module.setupConfig(builder);
+                builder.pop();
+            }
+        });
+    }
+    
+    public void reloadConfig() {
+        modules.forEach((name, module) -> module.reloadConfig());
     }
     
     public void setup(final FMLCommonSetupEvent event) {

@@ -20,6 +20,7 @@ import net.minecraft.world.gen.feature.OreFeatureConfig;
 import net.minecraft.world.gen.placement.CountRangeConfig;
 import net.minecraft.world.gen.placement.Placement;
 import net.minecraftforge.client.model.generators.ExistingFileHelper;
+import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -98,30 +99,45 @@ public class MaterialsModule extends Module {
     @ObjectHolder(ZINC + Suffix.ORE)
     public static Item zincOreItem;
     
+    ForgeConfigSpec.BooleanValue generateOres;
+    
     public MaterialsModule() {
         super("materials");
     }
     
     @Override
     public void setup(FMLCommonSetupEvent event) {
-        for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
-            if (biome.getCategory() != Biome.Category.THEEND && biome.getCategory() != Biome.Category.NETHER) {
-                biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES,
-                  Feature.ORE.withConfiguration(
-                    new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE,
-                      copperOre.getDefaultState(), 4)
-                  ).withPlacement(Placement.COUNT_RANGE.configure(
-                    new CountRangeConfig(10, 40, 0, 128)
-                  )));
-                biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES,
-                  Feature.ORE.withConfiguration(
-                    new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE,
-                      zincOre.getDefaultState(), 4)
-                  ).withPlacement(Placement.COUNT_RANGE.configure(
-                    new CountRangeConfig(10, 40, 0, 128)
-                  )));
+        if (generateOres.get()) {
+            for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
+                if (biome.getCategory() != Biome.Category.THEEND && biome.getCategory() != Biome.Category.NETHER) {
+                    biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES,
+                      Feature.ORE.withConfiguration(
+                        new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE,
+                          copperOre.getDefaultState(), 4)
+                      ).withPlacement(Placement.COUNT_RANGE.configure(
+                        new CountRangeConfig(10, 40, 0, 128)
+                      )));
+                    biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES,
+                      Feature.ORE.withConfiguration(
+                        new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE,
+                          zincOre.getDefaultState(), 4)
+                      ).withPlacement(Placement.COUNT_RANGE.configure(
+                        new CountRangeConfig(10, 40, 0, 128)
+                      )));
+                }
             }
         }
+    }
+    
+    @Override
+    public void setupConfig(ForgeConfigSpec.Builder builder) {
+        generateOres = builder.comment("Should we generate our own ores?")
+          .define("generatorOres", true);
+    }
+    
+    @Override
+    public boolean hasConfigs() {
+        return true;
     }
     
     @SubscribeEvent

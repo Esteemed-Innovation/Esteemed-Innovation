@@ -6,6 +6,7 @@ import net.minecraft.data.IDataProvider;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.ExistingFileHelper;
+import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
@@ -34,6 +35,18 @@ public class Module {
     }
     
     public void setupClient(final FMLClientSetupEvent event) {
+    }
+    
+    public void setupConfig(final ForgeConfigSpec.Builder builder) {
+    
+    }
+    
+    public boolean hasConfigs() {
+        return false;
+    }
+    
+    public void reloadConfig() {
+    
     }
     
     public <V extends IForgeRegistryEntry<V>> void register(IForgeRegistry<V> reg, IForgeRegistryEntry<V> thing, ResourceLocation name) {
