@@ -1,5 +1,7 @@
 {
   "variants": {
-    "" : { "model":  "esteemedinnovation:block/copper_block" }
+    "": {
+      "model": "esteemedinnovation:block/copper_block"
+    }
   }
 }

@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "esteemedinnovation:blocks/block_gilded_iron"
+    "all": "esteemedinnovation:block/gilded_iron_block"
   }
 }

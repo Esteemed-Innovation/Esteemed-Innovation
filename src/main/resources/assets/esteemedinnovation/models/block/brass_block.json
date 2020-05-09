@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "esteemedinnovation:blocks/block_brass"
+    "all": "esteemedinnovation:block/brass_block"
   }
 }

@@ -1,5 +1,7 @@
 {
   "variants": {
-    "" : { "model":  "esteemedinnovation:block/zinc_block" }
+    "": {
+      "model": "esteemedinnovation:block/zinc_block"
+    }
   }
 }

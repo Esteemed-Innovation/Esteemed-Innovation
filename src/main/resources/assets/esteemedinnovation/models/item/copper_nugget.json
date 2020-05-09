@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "esteemedinnovation:items/nugget_copper"
+    "layer0": "esteemedinnovation:item/copper_nugget"
   }
 }

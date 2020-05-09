@@ -1,5 +1,7 @@
 {
   "variants": {
-    "" : { "model":  "esteemedinnovation:block/brass_block" }
+    "": {
+      "model": "esteemedinnovation:block/brass_block"
+    }
   }
 }
