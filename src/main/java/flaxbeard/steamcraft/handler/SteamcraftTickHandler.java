@@ -109,7 +109,7 @@ public class SteamcraftTickHandler {
                             SteamcraftEventHandler.drainSteam(player.getCurrentArmor(2), 10);
                         }
                         player.motionY = 0.65D;
-                        //player.fallDistance = 0.0F;
+                        player.fallDistance = 0.0F;
                     }
                     if (isServer) {
                         boots.stackTagCompound.setBoolean("releasedSpace", false);
@@ -122,7 +122,6 @@ public class SteamcraftTickHandler {
                   SteamcraftEventHandler.hasPower(player, 5)) {
                     if (!player.onGround && !player.capabilities.isFlying) {
                         player.motionY += 0.06D;
-                        player.fallDistance = 0.0F;
                         if (!isServer) {
                             double rotation = Math.toRadians(player.renderYawOffset);
                             world.spawnParticle("smoke",
