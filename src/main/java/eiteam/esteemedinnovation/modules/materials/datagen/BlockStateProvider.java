@@ -6,8 +6,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.WeightedPressurePlateBlock;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
-import net.minecraftforge.client.model.generators.ExistingFileHelper;
 import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
@@ -23,9 +23,9 @@ public class BlockStateProvider extends net.minecraftforge.client.model.generato
     
     @Override
     protected void registerStatesAndModels() {
-        ForgeRegistries.BLOCKS.getEntries().stream().filter(e -> EsteemedInnovation.MODID.equals(e.getKey().getNamespace()))
+        ForgeRegistries.BLOCKS.getEntries().stream().filter(e -> EsteemedInnovation.MODID.equals(e.getKey().getRegistryName().getNamespace()))
           .forEach(e -> {
-              String name = e.getKey().getPath();
+              String name = e.getKey().getRegistryName().getPath();
               Block b = e.getValue();
               if (name.endsWith(Suffix.PRESSURE_PLATE)) {
                   ModelFile onFile = models().getBuilder(name).parent(models().getExistingFile(mcLoc("block/pressure_plate_up")))

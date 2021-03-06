@@ -1,19 +1,26 @@
 buildscript {
     repositories {
         maven { url = 'https://files.minecraftforge.net/maven' }
+        maven { url = 'https://dist.creeper.host/Sponge/maven' }
         jcenter()
         mavenCentral()
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
+apply plugin: 'org.spongepowered.mixin'
 
 ext.configFile = file('build.properties')
 ext.config = parseConfig(configFile)
+
+mixin {
+    add sourceSets.main, 'esteemedinnovation.refmap.json'
+}
 
 version = "${config.major_version}.${config.minor_version}"
 group = "eiteam.esteemedinnovation"
@@ -34,6 +41,7 @@ minecraft {
     runs {
         client {
             workingDirectory project.file('run')
+            arg '-mixin.config=esteemedinnovation.mixins.json'
             mods {
                 esteemedinnovation {
                     source sourceSets.main
@@ -43,6 +51,7 @@ minecraft {
 
         server {
             workingDirectory project.file('run')
+            arg '-mixin.config=esteemedinnovation.mixins.json'
             mods {
                 esteemedinnovation {
                     source sourceSets.main
@@ -94,7 +103,8 @@ jar {
             "Implementation-Title": project.name,
             "Implementation-Version": "${version}",
             "Implementation-Vendor" :"eiteam",
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+            "MixinConfigs": "esteemedinnovation.mixins.json"
         ])
     }
 }

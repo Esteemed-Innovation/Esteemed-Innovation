@@ -1,0 +1,11 @@
+{
+	"required": true,
+	"package": "eiteam.esteemedinnovation.mixins",
+	"compatibilityLevel": "JAVA_8",
+	"refmap": "esteemedinnovation.refmap.json",
+	"mixins": [
+	],
+	"client": [
+	],
+	"minVersion": "0.8"
+}

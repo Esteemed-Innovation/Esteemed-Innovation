@@ -1,5 +1,6 @@
 package eiteam.esteemedinnovation.modules.materials;
 
+import eiteam.esteemedinnovation.base.module.IServerConfigProvider;
 import eiteam.esteemedinnovation.base.module.Module;
 import eiteam.esteemedinnovation.modules.materials.datagen.BlockStateProvider;
 import eiteam.esteemedinnovation.modules.materials.datagen.ItemModelProvider;
@@ -17,12 +18,12 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
-import net.minecraft.world.gen.placement.CountRangeConfig;
 import net.minecraft.world.gen.placement.Placement;
-import net.minecraftforge.client.model.generators.ExistingFileHelper;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ToolType;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -33,7 +34,7 @@ import static eiteam.esteemedinnovation.base.EsteemedInnovation.MODID;
 import static eiteam.esteemedinnovation.base.ModNames.*;
 
 @ObjectHolder(MODID)
-public class MaterialsModule extends Module {
+public class MaterialsModule extends Module implements IServerConfigProvider {
     
     @ObjectHolder(COPPER + Suffix.INGOT)
     public static Item copperIngot;
@@ -105,39 +106,9 @@ public class MaterialsModule extends Module {
         super("materials");
     }
     
-    @Override
-    public void setup(FMLCommonSetupEvent event) {
-        if (generateOres.get()) {
-            for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
-                if (biome.getCategory() != Biome.Category.THEEND && biome.getCategory() != Biome.Category.NETHER) {
-                    biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES,
-                      Feature.ORE.withConfiguration(
-                        new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE,
-                          copperOre.getDefaultState(), 4)
-                      ).withPlacement(Placement.COUNT_RANGE.configure(
-                        new CountRangeConfig(10, 40, 0, 128)
-                      )));
-                    biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES,
-                      Feature.ORE.withConfiguration(
-                        new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE,
-                          zincOre.getDefaultState(), 4)
-                      ).withPlacement(Placement.COUNT_RANGE.configure(
-                        new CountRangeConfig(10, 40, 0, 128)
-                      )));
-                }
-            }
-        }
-    }
-    
-    @Override
-    public void setupConfig(ForgeConfigSpec.Builder builder) {
-        generateOres = builder.comment("Should we generate our own ores?")
-          .define("generatorOres", true);
-    }
-    
-    @Override
-    public boolean hasConfigs() {
-        return true;
+    @SubscribeEvent
+    public void onBiomeLoad(BiomeLoadingEvent event) {
+        //TODO: Add Ore Generation
     }
     
     @SubscribeEvent
@@ -190,5 +161,11 @@ public class MaterialsModule extends Module {
           new BlockStateProvider(generator, existingFileHelper),
           new ItemModelProvider(generator, existingFileHelper)
         };
+    }
+    
+    @Override
+    public void setupServerConfig(final ForgeConfigSpec.Builder builder) {
+        generateOres = builder.comment("Should we generate our own ores?")
+          .define("generatorOres", true);
     }
 }

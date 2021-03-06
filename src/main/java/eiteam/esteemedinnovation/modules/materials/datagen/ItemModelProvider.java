@@ -4,8 +4,8 @@ import eiteam.esteemedinnovation.base.EsteemedInnovation;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraftforge.client.model.generators.ExistingFileHelper;
 import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class ItemModelProvider extends net.minecraftforge.client.model.generators.ItemModelProvider {
@@ -16,9 +16,9 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
     
     @Override
     protected void registerModels() {
-        ForgeRegistries.ITEMS.getEntries().stream().filter(e -> EsteemedInnovation.MODID.equals(e.getKey().getNamespace()))
+        ForgeRegistries.ITEMS.getEntries().stream().filter(e -> EsteemedInnovation.MODID.equals(e.getKey().getRegistryName().getNamespace()))
           .forEach(e -> {
-              String name = e.getKey().getPath();
+              String name = e.getKey().getRegistryName().getPath();
               Item i = e.getValue();
               
               if (i instanceof BlockItem) {
