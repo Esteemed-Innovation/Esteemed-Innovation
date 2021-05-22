@@ -1,0 +1,62 @@
+{
+  "hiss":{
+    "category":"master",
+    "subtitle": "esteemedinnovation.subtitle.hiss",
+    "sounds":[
+      {
+        "name":"esteemedinnovation:hiss",
+        "stream":false
+      }
+    ]
+  },
+  "rocket":{
+    "category":"master",
+    "subtitle": "esteemedinnovation.subtitle.rocket",
+    "sounds":[
+      {
+        "name":"esteemedinnovation:rocket",
+        "stream":false
+      }
+    ]
+  },
+  "wrench":{
+    "category":"master",
+    "subtitle": "esteemedinnovation.subtitle.wrench",
+    "sounds":[
+      {
+        "name":"esteemedinnovation:wrench",
+        "stream":false
+      }
+    ]
+  },
+  "cannon":{
+    "category":"master",
+    "subtitle": "esteemedinnovation.subtitle.cannon",
+    "sounds":[
+      {
+        "name":"esteemedinnovation:cannon",
+        "stream":false
+      }
+    ]
+  },
+  "leaking":{
+    "category":"master",
+    "subtitle": "esteemedinnovation.subtitle.leaking",
+    "sounds":[
+      {
+        "name":"esteemedinnovation:leaking",
+        "stream":false
+      }
+    ]
+  },
+  "horn":{
+    "category":"master",
+    "subtitle": "esteemedinnovation.subtitle.whistle",
+    "sounds":[
+      {
+        "name":"esteemedinnovation:steamwhistle",
+        "stream":false
+      }
+    ]
+  }
+}

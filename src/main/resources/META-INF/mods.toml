@@ -1,0 +1,27 @@
+modLoader="javafml"
+loaderVersion="[36,)"
+issueTrackerURL="https://github.com/Esteemed-Innovation/Esteemed-Innovation/issues" #optional
+[[mods]]
+modId="esteemedinnovation"
+version="${file.jarVersion}"
+displayName="Esteemed Innovation"
+authors="eiteam"
+#updateJSONURL=""
+#displayURL=""
+#logoFile=""
+description='''
+An innovative tech mod revolving around steam and pressure.
+'''
+# Dependencies
+[[dependencies.esteemedinnovation]]
+    modId="forge"
+    mandatory=true
+    versionRange="[36,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.esteemedinnovation]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.16.5,1.17)"
+    ordering="NONE"
+    side="BOTH"
