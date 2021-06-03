@@ -1,5 +1,6 @@
 modLoader="javafml"
 loaderVersion="[36,)"
+license="Creative Commons Zero v1.0 Universal"
 issueTrackerURL="https://github.com/Esteemed-Innovation/Esteemed-Innovation/issues" #optional
 [[mods]]
 modId="esteemedinnovation"

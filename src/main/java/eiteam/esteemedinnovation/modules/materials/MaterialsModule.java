@@ -106,10 +106,12 @@ public class MaterialsModule extends Module implements IServerConfigProvider {
         super("materials");
     }
     
-    @SubscribeEvent
+    // Should be called on Forge bus (?)
+    // More info: https://forums.minecraftforge.net/topic/95504-1164-solved-ore-generation-using-biomeloadingevent/
+    /*@SubscribeEvent
     public void onBiomeLoad(BiomeLoadingEvent event) {
         //TODO: Add Ore Generation
-    }
+    }*/
     
     @SubscribeEvent
     public void registerItems(RegistryEvent.Register<Item> event) {
