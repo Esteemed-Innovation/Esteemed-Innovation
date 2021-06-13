@@ -33,7 +33,5 @@ public class APIMod {
         MinecraftForge.EVENT_BUS.register(new ItemSteamTool.ToolUpgradeEventDelegator());
         MinecraftForge.EVENT_BUS.register(new ExosuitEventDelegator());
         MinecraftForge.EVENT_BUS.register(new WorldLoadHandler());
-        RecipeSorter.register(API_MODID + ":research_recipe", ResearchRecipe.class, RecipeSorter.Category.SHAPED, "before:forge:shapedore");
-        RecipeSorter.register(API_MODID + ":shapeless_research_recipe", ShapelessResearchRecipe.class, RecipeSorter.Category.SHAPELESS, "before:forge:shapelessore");
     }
 }
