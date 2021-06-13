@@ -1,0 +1,28 @@
+modLoader="javafml"
+loaderVersion="[36,)"
+license="Creative Commons Zero v1.0 Universal"
+issueTrackerURL="https://github.com/Esteemed-Innovation/Esteemed-Innovation/issues" #optional
+[[mods]]
+modId="esteemedinnovationapi"
+version="@APIVERSION@"
+displayName="Esteemed Innovation API"
+authors="eiteam"
+#updateJSONURL=""
+#displayURL=""
+#logoFile=""
+description='''
+The API for the Esteemed Innovation mod.
+'''
+# Dependencies
+[[dependencies.esteemedinnovationapi]]
+    modId="forge"
+    mandatory=true
+    versionRange="[36,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.esteemedinnovationapi]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.16.5,1.17)"
+    ordering="NONE"
+    side="BOTH"
