@@ -8,20 +8,20 @@ import net.minecraft.world.storage.WorldSavedData;
 import javax.annotation.Nonnull;
 
 public class SteamNetworkData extends WorldSavedData {
-
+    
     private static final String ID = "EISteamNetworkData";
     private int dimID;
-
+    
     public SteamNetworkData(String s) {
         super(ID);
     }
-
+    
     public SteamNetworkData(int dimension) {
         super(ID);
         this.dimID = dimension;
         markDirty();
     }
-
+    
     public static SteamNetworkData get(World world) {
         SteamNetworkData data = (SteamNetworkData) world.getPerWorldStorage().getOrLoadData(SteamNetworkData.class, ID);
         if (data == null) {
@@ -32,19 +32,19 @@ public class SteamNetworkData extends WorldSavedData {
         }
         return data;
     }
-
+    
     @Override
     public void readFromNBT(@Nonnull NBTTagCompound nbt) {
         dimID = nbt.getInteger("dimID");
         SteamNetworkRegistry.getInstance().readFromNBT(nbt, dimID);
     }
-
+    
     @Nonnull
     @Override
     public NBTTagCompound writeToNBT(@Nonnull NBTTagCompound nbt) {
         nbt.setInteger("dimID", dimID);
         SteamNetworkRegistry.getInstance().writeToNBT(nbt, dimID);
-
+        
         return nbt;
     }
 }

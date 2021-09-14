@@ -1,16 +1,17 @@
 package eiteam.esteemedinnovation.base;
 
 
-import eiteam.esteemedinnovation.base.module.Module;
+import eiteam.esteemedinnovation.api.network.NetworkManager;
+import eiteam.esteemedinnovation.api.network.NetworkRegistry;
 import eiteam.esteemedinnovation.base.module.ModuleManager;
 import eiteam.esteemedinnovation.modules.materials.MaterialsModule;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -33,20 +34,13 @@ public class EsteemedInnovation {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupClient);
         registerModules();
-        registerModuleEvents();
         moduleManager.setupConfigs();
+        
+        MinecraftForge.EVENT_BUS.addListener(this::onWorldTick);
     }
     
     private void registerModules() {
         moduleManager.registerModule(new MaterialsModule());
-    }
-    
-    private void registerModuleEvents() {
-        for (Module module : moduleManager.getModules().values()) {
-            if (module.hasEvents) {
-                FMLJavaModLoadingContext.get().getModEventBus().register(module);
-            }
-        }
     }
     
     private void setup(final FMLCommonSetupEvent event) {
@@ -57,8 +51,18 @@ public class EsteemedInnovation {
         moduleManager.setupClient(event);
     }
     
+    private void onWorldTick(TickEvent.WorldTickEvent event) {
+        if(!event.world.isRemote && event.phase == TickEvent.Phase.START) {
+            NetworkManager.get(event.world).getNetworkData().update();
+        }
+    }
+    
     public static ResourceLocation resourceLocation(String path) {
         return new ResourceLocation(MODID, path);
+    }
+    
+    public static ResourceLocation forgeLocation(String path) {
+        return new ResourceLocation("forge", path);
     }
     
     public static final ItemGroup ITEM_GROUP = new ItemGroup("esteemedInnovation") {

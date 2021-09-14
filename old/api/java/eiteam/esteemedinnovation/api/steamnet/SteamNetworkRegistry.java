@@ -11,59 +11,59 @@ import java.util.*;
 
 public class SteamNetworkRegistry {
     private static boolean loaderRegistered = false;
-
+    
     private static SteamNetworkRegistry INSTANCE = new SteamNetworkRegistry();
     private HashSet<Integer> initialized = new HashSet<>();
-
+    
     /**
      * Key: Dimension ID, Value: All networks in that dimension.
      */
     private final HashMap<Integer, ArrayList<SteamNetwork>> networks = new HashMap<>();
-
+    
     public static SteamNetworkRegistry getInstance() {
         return INSTANCE;
     }
-
+    
     public static void initialize() {
         if (!loaderRegistered) {
             loaderRegistered = true;
             MinecraftForge.EVENT_BUS.register(INSTANCE);
         }
     }
-
+    
     public static void markDirty(SteamNetwork network) {
         World world = network.getWorld();
         if (world != null) {
             SteamNetworkData.get(world).markDirty();
         }
     }
-
+    
     public NBTTagCompound writeToNBT(NBTTagCompound nbt, int dimID) {
         return nbt;
     }
-
+    
     public void readFromNBT(NBTTagCompound nbt, int dimID) {
         initialized.add(dimID);
     }
-
+    
     public boolean isInitialized(int dim) {
         return initialized.contains(dim);
     }
-
+    
     @SubscribeEvent
     public void onTick(TickEvent.ServerTickEvent e) {
         for (ArrayList<SteamNetwork> nets : networks.values()) {
             nets.removeIf(net -> !net.tick());
         }
     }
-
+    
     public SteamNetwork getNewNetwork() {
         SteamNetwork net = new SteamNetwork();
         String name = UUID.randomUUID().toString();
         net.setName(name);
         return net;
     }
-
+    
     public void add(SteamNetwork network) {
         if (!networks.containsKey(network.getDimension())) {
             networks.put(network.getDimension(), new ArrayList<>());
@@ -75,7 +75,7 @@ public class SteamNetworkRegistry {
             SteamNetworkData.get(world).markDirty();
         }
     }
-
+    
     public void remove(SteamNetwork network) {
         if (networks.containsKey(network.getDimension())) {
             ArrayList<SteamNetwork> dimension = networks.get(network.getDimension());
@@ -86,7 +86,7 @@ public class SteamNetworkRegistry {
             }
         }
     }
-
+    
     public void newDimension(int dimensionId) {
         initialized.add(dimensionId);
     }

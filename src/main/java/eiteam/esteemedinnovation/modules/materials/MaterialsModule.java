@@ -14,19 +14,14 @@ import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.GenerationStage;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.OreFeatureConfig;
-import net.minecraft.world.gen.placement.Placement;
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.ObjectHolder;
 
@@ -104,14 +99,16 @@ public class MaterialsModule extends Module implements IServerConfigProvider {
     
     public MaterialsModule() {
         super("materials");
+        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Item.class, this::registerItems);
+        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Block.class, this::registerBlocks);
+        
+        MinecraftForge.EVENT_BUS.addListener(this::onBiomeLoad);
     }
     
-    // Should be called on Forge bus (?)
-    // More info: https://forums.minecraftforge.net/topic/95504-1164-solved-ore-generation-using-biomeloadingevent/
-    /*@SubscribeEvent
+    @SubscribeEvent
     public void onBiomeLoad(BiomeLoadingEvent event) {
         //TODO: Add Ore Generation
-    }*/
+    }
     
     @SubscribeEvent
     public void registerItems(RegistryEvent.Register<Item> event) {

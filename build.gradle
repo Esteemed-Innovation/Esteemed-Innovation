@@ -1,6 +1,6 @@
 buildscript {
     repositories {
-        maven { url = 'https://files.minecraftforge.net/maven' }
+        maven { url = 'https://maven.minecraftforge.net' }
         maven { url = 'https://repo.spongepowered.org/maven' }
         jcenter()
         mavenCentral()
@@ -124,6 +124,13 @@ task deobfJar(type: Jar) {
     description = 'Creates a JAR containing the non-obfuscated compiled code.'
     from sourceSets.main.output
     classifier = "deobf"
+}
+
+task apiJar(type: Jar) {
+    from sourceSets.main.allSource
+    from sourceSets.main.output
+    include 'eiteam/esteemedinnovation/api/**/*'
+    classifier = "api"
 }
 
 artifacts {

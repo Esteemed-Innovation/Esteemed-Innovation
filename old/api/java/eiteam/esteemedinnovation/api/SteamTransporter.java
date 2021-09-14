@@ -1,13 +1,14 @@
 package eiteam.esteemedinnovation.api;
 
-import eiteam.esteemedinnovation.api.steamnet.SteamNetwork;
-import eiteam.esteemedinnovation.api.util.Coord4;
-import net.minecraft.util.EnumFacing;
+import eiteam.esteemedinnovation.api.network.ITransporter;
+import eiteam.esteemedinnovation.modules.transport.steam.SteamNetwork;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.HashSet;
 
-public interface SteamTransporter {
+public interface SteamTransporter extends ITransporter {
 
     /**
      * The pressure of the device
@@ -46,13 +47,13 @@ public interface SteamTransporter {
 
     /**
      * @param amount How much steam can be inserted per
-     * @param face The side of the device
+     * @param direction The side of the device
      */
-    void insertSteam(int amount, EnumFacing face);
+    void insertSteam(int amount, Direction direction);
 
     void decrSteam(int i);
 
-    boolean doesConnect(EnumFacing face);
+    boolean doesConnect(Direction direction);
 
     /**
      * Called to ensure that the device can have a steam gauge put on it to check how much steam it has
@@ -61,31 +62,13 @@ public interface SteamTransporter {
      *
      * @return true if steam gauges can be put on it
      */
-    boolean acceptsGauge(EnumFacing face);
-
-    HashSet<EnumFacing> getConnectionSides();
-
-    World getWorldObj();
-
-    void setNetworkName(String name);
-
-    SteamNetwork getNetwork();
-
-    void setNetwork(SteamNetwork steamNetwork);
-
-    void refresh();
-
-    Coord4 getCoords();
+    boolean acceptsGauge(Direction direction);
 
     int getDimension();
 
     int getSteam();
 
     void updateSteam(int steam);
-
-    String getName();
-
-    void wasAdded();
 
     /**
      * @return Whether steam can pass through this transporter. Returns false for closed valve pipes, for example.

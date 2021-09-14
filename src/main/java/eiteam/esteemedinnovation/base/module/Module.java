@@ -14,15 +14,9 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 public class Module {
     
     private String name;
-    public boolean hasEvents;
     
     public Module(String name) {
-        this(name, true);
-    }
-    
-    public Module(String name, boolean hasEvents) {
         this.name = name;
-        this.hasEvents = hasEvents;
     }
     
     public String getName() {
