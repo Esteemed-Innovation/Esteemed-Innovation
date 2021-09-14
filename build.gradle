@@ -24,7 +24,7 @@ mixin {
 
 version = "${config.major_version}.${config.minor_version}"
 group = "eiteam.esteemedinnovation"
-archivesBaseName = 'EsteemedInnovation-1.15.2'
+archivesBaseName = "EsteemedInnovation-${config.mc_version}"
 
 if (System.getenv('BUILD_NUMBER') != null) {
     version += "." + System.getenv('BUILD_NUMBER');
